@@ -1,0 +1,1494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Integration Framework for School Districts — District Self-Assessment | Michigan Virtual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Michigan Virtual brand standards */
+  --black-teal:#091d20; --dark-teal:#093c44; --teal:#115e6e; --mid-teal:#2f8d98;
+  --light-teal:#C7DEE0; --pale-blue:#f3fafc; --green:#b5cd34; --orange:#f7941e;
+  --orange-h:#e07f0c; --sand:#e4b782; --cream:#fff4e7; --cream-200:#ffe9d2;
+  --dark-gray:#414042; --light-gray:#6d6e71;
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:var(--pale-blue); --surface-3:#eef7f9;
+  --text:var(--black-teal); --text-2:#33484c; --text-3:var(--light-gray);
+  --head:var(--dark-teal); --line:var(--light-teal); --line-2:#e4eef0;
+  --link:var(--orange); --action:var(--orange); --action-h:var(--orange-h); --action-ink:#1a1200;
+  --r-lg:40px; --r-md:24px; --r-sm:16px; --pill:100px;
+  --shadow:0 1px 2px rgba(9,60,68,.05), 0 10px 30px rgba(9,60,68,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#061417; --surface:#0a2429; --surface-2:#082024; --surface-3:#0c2b31;
+    --text:#f2f8f8; --text-2:#c3dadd; --text-3:#9fbcc0; --head:#e8f4f5;
+    --line:#1d474e; --line-2:#153a40; --link:var(--orange); --cream:#16262b; --cream-200:#1b2f34;
+    --pale-blue:#082024;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#061417; --surface:#0a2429; --surface-2:#082024; --surface-3:#0c2b31;
+  --text:#f2f8f8; --text-2:#c3dadd; --text-3:#9fbcc0; --head:#e8f4f5;
+  --line:#1d474e; --line-2:#153a40; --link:var(--orange); --cream:#16262b; --cream-200:#1b2f34;
+  --pale-blue:#082024;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg); color:var(--text);
+  font-family:'Figtree',ui-sans-serif,system-ui,sans-serif; font-size:17px; line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{color:var(--head); margin:0; line-height:1.2; font-weight:700; letter-spacing:-.01em}
+h4{font-weight:600}
+a{color:var(--link); text-decoration:underline; text-underline-offset:2px; font-weight:600}
+a:hover{color:var(--action)}
+:focus-visible{outline:3px solid var(--dark-teal); outline-offset:3px; border-radius:4px}
+:root[data-theme="dark"] :focus-visible,
+:root:not([data-theme="light"]) :focus-visible{outline-color:#8fd0da}
+.wrap{max-width:1080px; margin:0 auto; padding:0 5%}
+.wrap.wide{max-width:1560px}
+
+/* masthead */
+.mast{background:var(--surface); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:40}
+.mast .wrap{display:flex; align-items:center; gap:22px; min-height:76px; flex-wrap:wrap; padding-top:10px; padding-bottom:10px}
+.lock{padding:6px 0}
+.lock{font-weight:800; font-size:1.02rem; letter-spacing:.02em; color:var(--head); line-height:1.15}
+.lock small{display:block; font-weight:500; font-size:.68rem; letter-spacing:.04em; color:var(--mid-teal); margin-top:2px}
+.mast .spacer{flex:1}
+.mnav{display:flex; align-items:center; gap:18px; flex-wrap:wrap}
+.mnav a{font-size:.82rem; font-weight:600; color:var(--head); text-decoration:none; border-bottom:1px solid var(--light-teal)}
+.mnav a:hover{color:var(--orange); border-bottom-color:var(--orange)}
+.iconbtn{background:var(--surface); border:1px solid var(--line); color:var(--head); border-radius:var(--pill);
+  min-width:38px; height:38px; cursor:pointer; font-size:.9rem; font-family:inherit}
+.iconbtn:hover{border-color:var(--dark-teal)}
+.accent{height:4px; background:var(--green)}
+
+.rail{display:flex; gap:8px; align-items:center; padding:18px 0 0; flex-wrap:wrap; font-size:.8rem}
+.rail button{background:none; border:0; font-family:inherit; font-size:.8rem; color:var(--text-3); cursor:pointer; padding:2px 0}
+.rail button:hover{color:var(--action)}
+.rail button.on{color:var(--action); font-weight:700}
+.rail span{color:var(--line)}
+
+section.step{display:none; padding:28px 0 64px}
+section.step.on{display:block}
+.kick{font-size:.8rem; font-weight:600; color:var(--teal); margin-bottom:10px}
+h1.big{font-size:clamp(1.8rem,4vw,2.6rem); margin-bottom:14px}
+.lede{font-size:1.06rem; color:var(--text-2); max-width:68ch}
+.hero{background:var(--pale-blue); border:1px solid var(--line); border-radius:var(--r-lg); padding:34px 36px}
+:root[data-theme="dark"] .hero, :root:not([data-theme="light"]) .hero{background:var(--surface-3)}
+
+.btn{display:inline-flex; align-items:center; gap:8px; border:1px solid transparent; cursor:pointer;
+  font-family:inherit; font-weight:600; font-size:.95rem; padding:12px 22px; border-radius:var(--pill);
+  background:var(--action); color:var(--action-ink)}
+.btn:hover{background:var(--action-h)}
+.btn.sec{background:var(--surface); color:var(--head); border-color:var(--dark-teal)}
+:root[data-theme="dark"] .btn.sec, :root:not([data-theme="light"]) .btn.sec{background:transparent; color:var(--text); border-color:var(--line)}
+.btn.sec:hover{background:var(--cream)}
+.btn.sm{padding:9px 16px; font-size:.85rem}
+.btnrow{display:flex; gap:12px; flex-wrap:wrap; margin-top:24px; align-items:center}
+.txtbtn{background:none; border:0; font-family:inherit; font-size:.85rem; color:var(--link); cursor:pointer;
+  text-decoration:underline; text-underline-offset:2px; font-weight:600; padding:6px 2px}
+.txtbtn:hover{color:var(--action)}
+.topright{position:relative}
+.topright .corner{position:absolute; right:0; top:0}
+
+.cards{display:grid; gap:16px; margin-top:26px; grid-template-columns:repeat(auto-fit,minmax(258px,1fr))}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:20px 22px; box-shadow:var(--shadow)}
+.card.cream{background:var(--cream)}
+.card h3{font-size:1.05rem; margin-bottom:8px}
+.card p{margin:0; font-size:.92rem; color:var(--text-2)}
+.card .tagn{display:block; font-size:.76rem; font-weight:700; color:var(--teal); margin-bottom:8px}
+
+.strip{display:grid; gap:12px; margin-top:22px; grid-template-columns:repeat(3,1fr)}
+@media(max-width:800px){.strip{grid-template-columns:1fr}}
+.strip>div{padding:14px 16px; border:1px solid var(--line); border-radius:var(--r-sm); background:var(--surface-2)}
+.strip>div.hz{background:var(--cream)}
+.strip .lb{font-size:.72rem; font-weight:700; color:var(--teal); margin-bottom:4px}
+.strip .nm{font-weight:700; color:var(--head); margin-bottom:4px}
+.strip .tx{font-size:.85rem; color:var(--text-2)}
+
+/* assessment cubes */
+.prog{height:6px; background:var(--line-2); border-radius:var(--pill); overflow:hidden; margin:18px 0 8px}
+.prog i{display:block; height:100%; background:var(--orange); transition:width .25s}
+.progtx{font-size:.8rem; color:var(--text-3); margin-bottom:22px}
+.cubes{display:grid; gap:14px; grid-template-columns:repeat(3,1fr)}
+@media(max-width:1000px){.cubes{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:660px){.cubes{grid-template-columns:1fr}}
+.cube{position:relative; text-align:left; cursor:pointer; font-family:inherit; font-size:.93rem; line-height:1.5;
+  color:var(--text); background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md);
+  padding:20px 20px 20px 48px; min-height:170px; transition:border-color .15s, box-shadow .15s, background .15s}
+.cube:hover{border-color:var(--teal); box-shadow:var(--shadow)}
+.cube .mark{position:absolute; left:18px; top:20px; width:20px; height:20px; border-radius:50%;
+  border:2px solid var(--light-teal); background:var(--bg)}
+.cube[aria-pressed="true"]{border-color:var(--orange); box-shadow:inset 0 0 0 2px var(--orange); background:var(--cream)}
+.cube[aria-pressed="true"] .mark{border-color:var(--orange); background:var(--orange); box-shadow:inset 0 0 0 3px var(--cream)}
+.cube[aria-pressed="true"]:after{content:"Selected"; position:absolute; right:16px; bottom:14px; font-size:.7rem;
+  font-weight:700; color:var(--orange)}
+.cube.none{background:var(--cream-200); border-style:dashed; min-height:auto}
+:root[data-theme="dark"] .cube.none, :root:not([data-theme="light"]) .cube.none{background:var(--surface-3)}
+.notes{margin-top:22px}
+.notes label{display:block; font-size:.86rem; font-weight:600; color:var(--head); margin-bottom:7px}
+.notes .hint{font-weight:400; color:var(--text-3); font-size:.82rem}
+textarea{width:100%; font-family:inherit; font-size:.92rem; color:var(--text); background:var(--surface);
+  border:1px solid var(--line); border-radius:var(--r-sm); padding:12px 14px; resize:vertical; min-height:86px; line-height:1.5}
+.saved{font-size:.76rem; color:var(--teal); font-weight:600; height:1em; margin-top:5px}
+.nav{display:flex; justify-content:space-between; gap:12px; margin-top:26px; align-items:center; flex-wrap:wrap}
+
+/* profile */
+table.prof{width:100%; border-collapse:collapse; margin-top:22px; font-size:.93rem}
+table.prof caption{text-align:left; font-size:.85rem; color:var(--text-3); padding-bottom:10px}
+table.prof th{text-align:left; font-size:.8rem; color:#fff; background:var(--dark-teal); font-weight:600; padding:10px 12px}
+table.prof th:first-child{border-radius:var(--r-sm) 0 0 0}
+table.prof th:last-child{border-radius:0 var(--r-sm) 0 0}
+table.prof td{padding:13px 12px; border-bottom:1px solid var(--line-2); vertical-align:middle}
+table.prof tbody tr:nth-child(even) td{background:var(--surface-2)}
+table.prof tr.row{cursor:pointer}
+table.prof tr.row:hover td{background:var(--cream)}
+.dname{font-weight:700; color:var(--head)}
+.dsub{font-size:.78rem; color:var(--text-3)}
+.chip{display:inline-block; font-size:.78rem; font-weight:700; padding:4px 12px; border-radius:var(--pill); white-space:nowrap}
+.bar{display:inline-flex; gap:3px; min-width:120px; vertical-align:middle}
+.bar i{height:9px; flex:1; border-radius:2px; background:var(--line-2)}
+.bar i.f{background:var(--dark-teal)}
+.bar i.h{background:var(--sand)}
+.opener{font-size:.82rem; font-weight:700; color:var(--action); white-space:nowrap}
+.blank{color:var(--text-3); font-style:italic; font-size:.85rem}
+.pri{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); margin-top:10px}
+.pri .card{border-left:5px solid var(--orange)}
+.note{background:var(--cream); border:1px solid var(--sand); border-radius:var(--r-md); padding:16px 20px;
+  font-size:.92rem; color:var(--text); margin-top:26px}
+h2.sec{font-size:1.3rem; margin:44px 0 6px}
+p.secsub{font-size:.92rem; color:var(--text-2); margin:0 0 4px; max-width:70ch}
+
+/* contacts */
+.contacts{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); margin-top:18px}
+.contacts .c{border:1px solid var(--line); border-radius:var(--r-md); padding:16px 18px; background:var(--surface-2)}
+.contacts .bn{font-size:.74rem; font-weight:700; color:var(--teal); margin-bottom:4px}
+.contacts .cn{font-weight:700; color:var(--head); font-size:.98rem; margin-bottom:6px}
+.contacts .ch{font-size:.88rem; color:var(--text-2)}
+.contacts .tbd{color:var(--orange); font-weight:600}
+.contacts .dm{font-size:.78rem; color:var(--text-3); margin-top:8px}
+
+/* matrix */
+.mxwrap{overflow-x:auto; margin-top:22px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface)}
+table.mx{border-collapse:separate; border-spacing:0; min-width:1400px; width:100%; font-size:.78rem}
+table.mx th, table.mx td{padding:9px 11px; border-bottom:1px solid var(--line-2); border-right:1px solid var(--line-2); vertical-align:top}
+table.mx thead th{background:var(--dark-teal); color:#fff; position:sticky; top:0; z-index:2; text-align:left; font-weight:600}
+table.mx thead th .mn{font-size:.9rem; font-weight:700; display:block}
+table.mx thead th .ml{font-size:.68rem; opacity:.85; display:block; margin-bottom:3px}
+table.mx thead th.hz{background:var(--sand); color:var(--black-teal)}
+table.mx thead th:first-child{background:var(--black-teal)}
+table.mx tbody th{position:sticky; left:0; z-index:1; background:var(--surface-2); text-align:left; min-width:190px; max-width:190px}
+table.mx tbody th .rn{font-size:.68rem; color:var(--text-3); display:block}
+table.mx tbody th .rt{font-weight:700; color:var(--head); font-size:.82rem}
+table.mx td{min-width:196px; max-width:230px; cursor:pointer; color:var(--text-2); line-height:1.4}
+table.mx td:hover{background:var(--cream)}
+table.mx td.hzc{background:var(--cream-200)}
+:root[data-theme="dark"] table.mx td.hzc, :root:not([data-theme="light"]) table.mx td.hzc{background:var(--surface-3)}
+table.mx td.you{box-shadow:inset 0 0 0 2px var(--orange)}
+table.mx td.empty{cursor:default; color:var(--text-3); font-style:italic; text-align:center}
+table.mx td .lfn{display:block; margin-top:6px; font-size:.68rem; color:var(--teal); font-weight:600}
+.mxkey{display:flex; gap:18px; flex-wrap:wrap; font-size:.8rem; color:var(--text-3); margin-top:14px; align-items:center}
+.mxkey b{color:var(--text-2)}
+
+/* panel */
+.scrim{position:fixed; inset:0; background:rgba(3,24,27,.6); z-index:60; display:none}
+.scrim.on{display:block}
+.panel{position:fixed; z-index:61; inset:auto 0 0 0; max-height:92vh; overflow-y:auto; display:none;
+  background:var(--bg); border-top:4px solid var(--green); border-radius:var(--r-md) var(--r-md) 0 0}
+.panel.on{display:block}
+@media(min-width:960px){.panel{inset:0 0 0 auto; width:min(680px,100%); max-height:100vh; border-radius:0;
+  border-top:0; border-left:4px solid var(--green)}}
+.ph{position:sticky; top:0; background:var(--bg); z-index:2; display:flex; justify-content:space-between;
+  align-items:flex-start; gap:14px; padding:22px 26px 14px; border-bottom:1px solid var(--line-2)}
+.panel .inner{padding:22px 26px 56px}
+.tabs{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 22px}
+.tab{border:1px solid var(--line); background:var(--surface); color:var(--text-2); border-radius:var(--pill);
+  cursor:pointer; font-family:inherit; font-size:.78rem; font-weight:600; padding:7px 14px}
+.tab:hover{border-color:var(--teal)}
+.tab.on{background:var(--dark-teal); border-color:var(--dark-teal); color:#fff}
+.tab.hz.on{background:var(--sand); border-color:var(--sand); color:var(--black-teal)}
+.tab.you:after{content:" •"; color:var(--orange); font-weight:800}
+.tab.on.you:after{color:#fff}
+.block{margin-bottom:24px}
+.block>h4{font-size:.82rem; color:var(--teal); margin-bottom:8px}
+.stagebox{background:var(--surface-2); border:1px solid var(--line); border-radius:var(--r-md); padding:16px 18px}
+.stagebox .sl{font-size:.74rem; font-weight:600; color:var(--text-3)}
+.stagebox .sn{font-weight:700; font-size:1.1rem; color:var(--head)}
+.stagebox p{margin:9px 0 0; font-size:.9rem; color:var(--text-2)}
+.spec{font-size:1rem; color:var(--text)}
+ul.lf{list-style:none; padding:0; margin:0; display:grid; gap:8px}
+ul.lf li{position:relative; padding-left:18px; font-size:.91rem; color:var(--text-2)}
+ul.lf li:before{content:""; position:absolute; left:0; top:.6em; width:7px; height:7px; border-radius:2px; background:var(--orange)}
+.gate{border:1px solid var(--line); border-radius:var(--r-md); padding:16px 18px; background:var(--surface)}
+.gate label{display:flex; gap:11px; align-items:flex-start; font-size:.9rem; color:var(--text-2); padding:6px 0; cursor:pointer}
+.gate input[type=checkbox]{margin-top:4px; accent-color:var(--orange); width:17px; height:17px}
+.verdict{margin-top:13px; font-size:.9rem; font-weight:700; padding:12px 15px; border-radius:var(--r-sm)}
+.verdict.no{background:var(--surface-2); color:var(--text-2); border:1px solid var(--line)}
+.verdict.yes{background:var(--cream); color:var(--text); border:1px solid var(--sand)}
+.res{display:grid; gap:10px}
+a.r{display:block; border:1px solid var(--line); border-radius:var(--r-sm); padding:13px 15px;
+  background:var(--surface); text-decoration:none; color:var(--text); font-weight:400}
+a.r:hover{border-color:var(--orange); background:var(--cream)}
+a.r .rt{font-weight:700; font-size:.92rem; color:var(--head); line-height:1.35; text-decoration:underline; text-underline-offset:2px}
+a.r .rm{font-size:.78rem; color:var(--text-3); margin-top:4px}
+a.r .rb{display:inline-block; font-size:.68rem; font-weight:700; color:var(--teal);
+  border:1px solid var(--line); border-radius:var(--pill); padding:1px 8px; margin-right:7px}
+.hist{display:grid; gap:10px; margin-bottom:12px}
+.hist .h{border-left:3px solid var(--light-teal); padding:2px 0 2px 12px}
+.hist .hq{font-size:.86rem; font-weight:700; color:var(--head)}
+.hist .ha{font-size:.86rem; color:var(--text-2); white-space:pre-wrap; margin-top:4px}
+.hist .ht{font-size:.72rem; color:var(--text-3); margin-top:4px}
+.answer{margin-top:13px; font-size:.9rem; color:var(--text-2); white-space:pre-wrap; background:var(--surface-2);
+  border:1px solid var(--line); border-radius:var(--r-sm); padding:14px 16px; display:none}
+.answer.on{display:block}
+
+footer.ft{background:var(--dark-teal); color:#fff; padding:36px 0 44px; margin-top:26px}
+footer.ft h4{color:#fff; font-size:1rem; margin-bottom:10px}
+footer.ft p{font-size:.85rem; color:#d7e6e8; margin:0 0 10px; max-width:88ch}
+footer.ft a{color:#fff}
+footer.ft .cols{display:grid; gap:26px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin-bottom:24px}
+footer.ft .fl{display:flex; gap:20px; flex-wrap:wrap; font-size:.88rem; padding-top:18px; border-top:1px solid rgba(255,255,255,.22)}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+@media print{
+  .mast,.rail,.scrim,.panel,.btnrow,.nav,footer.ft .fl,.ubar,.crumb{display:none!important}
+  section.step{display:block!important}
+}
+
+/* ============================================================
+   SITE CHROME v2 — October 2026
+   Matches michiganvirtual.org: utility bar, white masthead with
+   green rule, breadcrumb, Deep Teal title band, MV footer.
+   Palette and type per michiganvirtual.org/brand (Figtree;
+   Deep Teal headings, Black Teal body, Orange CTA with Black
+   Teal ink, A11y Orange for links and hovers, Green as divider
+   only). Loaded last so it retunes the tokens above.
+   ============================================================ */
+:root{
+  --r-lg:16px; --r-md:12px; --r-sm:8px;
+  /* MV's own site is not pill-shaped; carry the same angular geometry
+     into the CTA buttons and chips, not just the cards above */
+  --pill:10px;
+  --action:#f7941e; --action-h:#a84c2a; --action-ink:#091d20;
+  --link:#a84c2a;            /* A11y Orange — MV link colour that clears 4.5:1 */
+  --link-h:#093c44;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --link:#f7b45e; --link-h:#ffd7a6;
+}}
+:root[data-theme="dark"]{--link:#f7b45e; --link-h:#ffd7a6}
+a:hover{color:var(--link-h)}
+
+/* ---------- utility bar ---------- */
+.ubar{background:var(--black-teal);color:#c3dfe3;font-size:.8rem}
+.ubar .wrap{display:flex;align-items:center;gap:18px;min-height:40px;flex-wrap:wrap}
+.ubar a{color:#dceef0;text-decoration:none;font-weight:500}
+.ubar a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.ubar .lead{margin-right:auto;color:#fff;font-weight:600}
+.ubar .iconbtn{background:transparent;border:1px solid rgba(199,222,224,.4);color:#dceef0;min-width:0;height:26px;
+  padding:0 12px;font-size:.75rem;font-weight:500}
+.ubar .iconbtn:hover{background:rgba(255,255,255,.1);border-color:#dceef0}
+
+/* ---------- masthead ---------- */
+.mast{top:env(safe-area-inset-top,0px)}
+.mast .wrap{min-height:80px;gap:28px}
+.lock{display:flex;align-items:center;gap:14px;font-weight:800;font-size:1.22rem;letter-spacing:-.01em;
+  color:var(--dark-teal);line-height:1.1;text-decoration:none}
+.lock .unit{font-weight:600;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);
+  border-left:3px solid var(--green);padding-left:14px;line-height:1.25}
+.mnav{gap:22px}
+.mnav a{font-size:.9rem;border-bottom:0;padding:8px 0;box-shadow:inset 0 -3px 0 transparent}
+.mnav a:hover{color:var(--dark-teal);box-shadow:inset 0 -3px 0 var(--orange)}
+.mnav .cta{background:var(--action);color:var(--action-ink);border-radius:var(--pill);padding:11px 20px;
+  box-shadow:none;font-weight:700}
+.mnav .cta:hover{background:var(--action-h);color:#fff;box-shadow:none}
+@media(max-width:860px){.mnav .hidesm{display:none}}
+
+/* ---------- breadcrumb ---------- */
+.crumb{background:var(--pale-blue);border-bottom:1px solid var(--line-2);font-size:.8rem}
+:root[data-theme="dark"] .crumb,:root:not([data-theme="light"]) .crumb{background:var(--surface-2)}
+.crumb .wrap{display:flex;gap:9px;flex-wrap:wrap;align-items:center;padding-top:11px;padding-bottom:11px;color:var(--text-3)}
+.crumb a{color:var(--teal);text-decoration:none;font-weight:600}
+.crumb a:hover{color:var(--action-h);text-decoration:underline;text-underline-offset:2px}
+.crumb .sep{color:var(--light-teal)}
+.crumb .here{color:var(--text-3);font-weight:500}
+
+/* ---------- step rail ---------- */
+.rail{padding:20px 0 0}
+
+/* ---------- intro title band: Deep Teal field ---------- */
+.hero{background:var(--dark-teal);border:0;color:#fff;padding:44px 42px;position:relative;overflow:hidden}
+:root[data-theme="dark"] .hero,:root:not([data-theme="light"]) .hero{background:#0a2f36}
+.hero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--green)}
+.hero .kick{color:#c7dee0;letter-spacing:.06em;text-transform:uppercase;font-size:.74rem}
+.hero h1.big{color:#fff}
+.hero .lede{color:#c7dee0}
+.hero .lede[style]{color:#fff !important}
+.hero .btn.sec{background:transparent;color:#fff;border-color:#fff}
+.hero .btn.sec:hover{background:#fff;color:var(--dark-teal)}
+.hero :focus-visible{outline-color:#fff}
+@media(max-width:620px){.hero{padding:30px 22px}}
+
+/* ---------- buttons ---------- */
+.btn:hover{color:#fff}
+.btn.sec:hover{background:var(--pale-blue);color:var(--dark-teal)}
+
+/* ---------- section headings get the green MV divider ---------- */
+h2.sec{padding-bottom:12px;border-bottom:3px solid var(--green);display:block}
+h1.big{letter-spacing:-.02em}
+
+/* ---------- cards sit a little flatter, MV-style ---------- */
+.card{box-shadow:none}
+.card:hover{border-color:var(--mid-teal)}
+.card.cream{background:var(--pale-blue);border-color:var(--light-teal)}
+
+/* ---------- footer: michiganvirtual.org pattern ---------- */
+footer.ft{background:var(--dark-teal);padding:0;margin-top:52px}
+footer.ft .ftop{border-bottom:1px solid rgba(255,255,255,.16)}
+footer.ft .ftop .wrap{padding-top:34px;padding-bottom:30px}
+footer.ft .flock{font-weight:800;font-size:1.3rem;color:#fff;letter-spacing:-.01em}
+footer.ft .flock span{display:block;font-weight:500;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;
+  color:#c7dee0;margin-top:6px}
+footer.ft .cols{margin:0;padding:34px 0 10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:30px}
+footer.ft .cols h4{font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:#c7dee0;margin-bottom:12px}
+footer.ft .cols ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+footer.ft .cols a{font-size:.88rem;color:#fff;text-decoration:none}
+footer.ft .cols a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+footer.ft .fbottom .wrap{display:flex;gap:12px 28px;flex-wrap:wrap;align-items:center;font-size:.84rem;
+  color:#c7dee0;padding-top:20px;padding-bottom:40px;border-top:1px solid rgba(255,255,255,.16);margin-top:16px}
+footer.ft .fbottom a{color:#fff}
+footer.ft .fl{border-top:0;padding-top:0;margin-left:auto}
+footer.ft .disc .wrap{padding-bottom:26px}
+footer.ft .disc p{color:#b9d3d6;font-size:.8rem;max-width:96ch}
+</style>
+</head>
+<body>
+
+<div class="ubar">
+  <div class="wrap wide">
+    <span class="lead">Michigan Virtual AI Lab</span>
+    <a href="https://michiganvirtual.org/login" target="_blank" rel="noopener">Login</a>
+    <a href="https://michiganvirtual.org/about/careers" target="_blank" rel="noopener">Careers</a>
+    <a href="https://michiganvirtual.org/about/support" target="_blank" rel="noopener">Need help?</a>
+    <button class="iconbtn" id="theme" title="Switch between standard and high contrast" aria-label="Switch between standard and high contrast">High contrast</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     LOGO SWAP POINT
+     Marketing's approved artwork lives at
+     michiganvirtual.org/branding/logos/mv-logo-horizontal.svg
+     (also in the logo package at michiganvirtual.org/brand).
+     Drop the SVG inside the <a class="lock"> below, in place of
+     the wordmark text, and delete the .lock text rules. The
+     brand standards prohibit rebuilding or mimicking the mark,
+     so nothing here attempts to draw it.
+     ============================================================ -->
+<header class="mast">
+  <div class="wrap wide">
+    <a class="lock" href="https://michiganvirtual.org/" target="_blank" rel="noopener">Michigan&nbsp;Virtual<span class="unit">AI Lab</span></a>
+    <div class="spacer"></div>
+    <nav class="mnav" aria-label="Michigan Virtual">
+      <a class="hidesm" href="https://michiganvirtual.org/ai" target="_blank" rel="noopener">AI resources</a>
+      <a class="hidesm" href="https://michiganvirtual.org/research/publications/" target="_blank" rel="noopener">Publications</a>
+      <a class="hidesm" href="https://claude.ai/artifact/QZUUP2KXQ8TsxVWGiTunzs" target="_blank" rel="noopener">AI4MI Resource Commons</a>
+      <a class="cta" href="#s-assess" data-go="assess">Start the self-assessment</a>
+    </nav>
+  </div>
+</header>
+<div class="accent"></div>
+
+<nav class="crumb" aria-label="Breadcrumb">
+  <div class="wrap wide">
+    <a href="https://michiganvirtual.org/" target="_blank" rel="noopener">Home</a>
+    <span class="sep" aria-hidden="true">&rsaquo;</span>
+    <a href="https://michiganvirtual.org/institute" target="_blank" rel="noopener">Research &amp; Innovation</a>
+    <span class="sep" aria-hidden="true">&rsaquo;</span>
+    <a href="https://michiganvirtual.org/ai" target="_blank" rel="noopener">AI Lab</a>
+    <span class="sep" aria-hidden="true">&rsaquo;</span>
+    <span class="here">AI Integration Framework for School Districts</span>
+  </div>
+</nav>
+
+<div class="wrap">
+  <nav class="rail" id="rail" aria-label="Steps"></nav>
+</div>
+
+<!-- ===== 1 INTRO ===== -->
+<section class="step on" id="s-intro">
+  <div class="wrap">
+    <div class="hero">
+      <div class="kick">Michigan Virtual AI Lab</div>
+      <h1 class="big">AI Integration Framework for School Districts</h1>
+      <p class="lede" style="font-size:1.12rem;color:var(--head);font-weight:600;margin-bottom:10px">Find out where you actually are. Then get the next step, not the whole map.</p>
+      <p class="lede">Eleven domains and six columns sit behind this — 66 boxes, 61 of them filled — and you
+        will never see all of it at once unless you ask to. Answer one question per domain, take notes as you go,
+        and open only the box you are standing in.</p>
+      <div class="btnrow">
+        <button class="btn" data-go="learn">Start with the basics</button>
+        <button class="btn sec" data-go="assess">Skip to the self-assessment</button>
+        <button class="btn sec" data-go="matrix">View the full matrix</button>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card"><span class="tagn">About 10 minutes</span><h3>One question per domain</h3>
+        <p>Six descriptions per domain. Pick the one that sounds most like your current state. There is no
+          score and no ranking of the choices.</p></div>
+      <div class="card"><span class="tagn">Stays on this device</span><h3>Your notes are yours</h3>
+        <p>Selections, notes, and any questions you ask are saved in this browser only — nothing is transmitted.
+          Download a backup file when you are done so the work is not tied to one computer.</p></div>
+      <div class="card cream"><span class="tagn">Built on the 2023 framework</span><h3>An extension, not a replacement</h3>
+        <p>This extends the <em>AI Integration Framework for School Districts</em> (Michigan Virtual, July 2023)
+          and aligns the stages to the National Implementation Research Network active implementation stages.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2 BASICS ===== -->
+<section class="step" id="s-learn">
+  <div class="wrap topright">
+    <div class="corner"><button class="txtbtn" data-go="assess">Skip this</button></div>
+    <div class="kick">Before you assess</div>
+    <h1 class="big">Four ideas, then you are ready</h1>
+    <p class="lede">You do not need implementation science to use this. You do need these four things, because
+      most wrong answers on a readiness tool come from missing one of them.</p>
+
+    <div class="cards">
+      <div class="card"><span class="tagn">1 — Stages, not scores</span><h3>You are not being graded</h3>
+        <p>Districts move through stages over two to four years. A stage describes where the work is, not how
+          good you are. Naming an early stage accurately is worth more than claiming a late one.</p></div>
+      <div class="card"><span class="tagn">2 — Installation is real work</span><h3>Deciding is not doing</h3>
+        <p>Between "we decided to" and "students are using it" sits a whole stage: policy adopted, agreements
+          signed, staff trained, procedures rehearsed. Skipping it is the most common way this fails. The 2023
+          framework did not have this column.</p></div>
+      <div class="card"><span class="tagn">3 — Jagged is normal</span><h3>Expect an uneven profile</h3>
+        <p>You will be further along in some domains than others. Almost nobody sits in the same column across
+          the board, and a flat profile usually means someone guessed. The uneven shape is the useful part.</p></div>
+      <div class="card"><span class="tagn">4 — No best practice yet</span><h3>The front end is design work</h3>
+        <p>Implementation science assumes a proven practice to scale. With AI, nobody has one. So the early
+          columns are deliberately messy: pilot, iterate, find out what works here. Discipline comes once
+          something is worth locking in.</p></div>
+    </div>
+
+    <h2 class="sec">The six columns, one line each</h2>
+    <p class="secsub">You will not be asked to name these. They are here so the profile makes sense afterward.</p>
+    <div class="strip" id="strip"></div>
+
+    <div class="btnrow">
+      <button class="btn" data-go="assess">I am ready — start the self-assessment</button>
+      <button class="btn sec" data-go="matrix">Show me the full matrix first</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3 ASSESSMENT ===== -->
+<section class="step" id="s-assess">
+  <div class="wrap topright">
+    <div class="corner"><button class="txtbtn" data-go="profile" id="jump">Go to my profile</button></div>
+    <div class="kick" id="qkick">Self-assessment</div>
+    <h1 class="big" id="qdomain">Domain</h1>
+    <p class="lede" id="qprompt">Which of the following sounds most like it is describing your current state?</p>
+    <div class="prog"><i id="pbar" style="width:0%"></i></div>
+    <div class="progtx" id="ptx"></div>
+
+    <div class="cubes" id="cubes"></div>
+    <div style="margin-top:14px"><button class="txtbtn" id="unsure">None of these — skip this domain</button></div>
+
+    <div class="notes">
+      <label for="qnote">Notes and comments for this domain
+        <span class="hint">— work you have already done, evidence you have seen, who is involved, what is stuck.</span></label>
+      <textarea id="qnote" placeholder="e.g. Board heard a first reading in March. Tech director has a partial DPA list. Nothing in handbooks yet."></textarea>
+      <div class="saved" id="qsaved"></div>
+    </div>
+
+    <div class="nav">
+      <button class="btn sec sm" id="back">Back</button>
+      <button class="btn sm" id="next">Next domain</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4 PROFILE ===== -->
+<section class="step" id="s-profile">
+  <div class="wrap">
+    <div class="kick">Your district profile</div>
+    <h1 class="big">Where you are, honestly</h1>
+    <p class="lede" id="psum"></p>
+
+    <div class="btnrow" style="margin-top:18px">
+      <button class="btn sec sm" id="sortbtn">Sort: furthest behind first</button>
+      <button class="btn sec sm" data-go="matrix">Open the full matrix</button>
+      <button class="btn sec sm" id="copy">Copy summary</button>
+      <button class="btn sec sm" onclick="window.print()">Print</button>
+      <button class="btn sec sm" id="redo">Retake</button>
+    </div>
+
+    <table class="prof">
+      <caption>Select any row to open that domain at the level you marked.</caption>
+      <thead><tr><th scope="col" style="width:42%">Domain</th><th scope="col" style="width:20%">Where you are</th>
+        <th scope="col" style="width:20%">Progression</th><th scope="col">Notes</th><th scope="col"></th></tr></thead>
+      <tbody id="ptable"></tbody>
+    </table>
+
+    <h2 class="sec">If you only work on three things this year</h2>
+    <p class="secsub">Your three furthest-behind domains, with the next move in each.</p>
+    <div class="pri" id="pri"></div>
+
+    <div class="note" id="jagnote"></div>
+
+    <h2 class="sec">Save, back up, or restore your work</h2>
+    <p class="secsub">Everything lives in this browser. Download a backup to move it to another machine, share it
+      with a colleague, or pick up where you left off later.</p>
+    <div class="btnrow" style="margin-top:14px">
+      <button class="btn sm" id="dljson">Download backup (.json)</button>
+      <button class="btn sec sm" id="dlcsv">Download spreadsheet (.csv)</button>
+      <label class="btn sec sm" for="upl" style="cursor:pointer">Restore from a file
+        <input type="file" id="upl" accept=".json,.csv,text/csv,application/json" style="display:none"></label>
+      <button class="btn sec sm" id="reset">Clear everything</button>
+    </div>
+    <div class="saved" id="iosaved" style="margin-top:8px"></div>
+    <p class="secsub" style="margin-top:10px; font-size:.85rem; color:var(--text-3)">The JSON backup carries
+      everything: selections, notes, checkpoints, and your saved questions and answers. The CSV carries the same
+      content in a spreadsheet you can read and edit, and it can be restored too.</p>
+
+    <h2 class="sec">Who to talk to</h2>
+    <p class="secsub">Each domain maps to a bench of the AI4MI Statewide AI Workgroup, convened by the Michigan Virtual AI Lab.
+      Reach the bench co-chairs with questions, or to share what you are learning.</p>
+    <div class="contacts" id="contacts"></div>
+  </div>
+</section>
+
+<!-- ===== 5 FULL MATRIX ===== -->
+<section class="step" id="s-matrix">
+  <div class="wrap wide">
+    <div class="kick">The whole thing, in one place</div>
+    <h1 class="big">Full matrix — eleven domains, six columns</h1>
+    <p class="lede">This is the complete reference behind the self-assessment, the same content as the printed
+      tabloid sheet. Select any box to open that domain at that level with its indicators, look-fors, notes, and
+      linked resources. Empty boxes are deliberate.</p>
+    <div class="mxwrap" id="mxwrap"></div>
+    <div class="mxkey">
+      <span><b>Design and discovery:</b> Surfacing, Exploration</span>
+      <span><b>Implementation science:</b> Installation through Full implementation</span>
+      <span><b>Outside the stages:</b> Innovation horizon</span>
+      <span><b>Outlined box:</b> where you marked yourself</span>
+    </div>
+    <div class="btnrow">
+      <button class="btn" data-go="assess">Take the self-assessment</button>
+      <button class="btn sec" data-go="profile">Back to my profile</button>
+    </div>
+  </div>
+</section>
+
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="pt">
+  <div class="ph">
+    <div>
+      <div class="dsub" id="pdrv"></div>
+      <h2 id="pt" style="font-size:1.2rem"></h2>
+    </div>
+    <button class="iconbtn" id="close" aria-label="Close">Close</button>
+  </div>
+  <div class="inner" id="pbody"></div>
+</aside>
+
+<footer class="ft">
+  <div class="ftop">
+    <div class="wrap wide">
+      <div class="flock">Michigan Virtual<span>AI Lab &#183; Michigan Virtual Learning Research Institute</span></div>
+    </div>
+  </div>
+  <div class="disc">
+    <div class="wrap wide">
+      <div class="cols">
+        <div>
+          <h4>About this tool</h4>
+          <ul>
+            <li><a href="https://michiganvirtual.org/ai" target="_blank" rel="noopener">AI resources at Michigan Virtual</a></li>
+            <li><a href="https://michiganvirtual.org/ai/prototype-playground" target="_blank" rel="noopener">Prototype Playground</a></li>
+            <li><a href="https://michiganvirtual.org/research/publications/" target="_blank" rel="noopener">Research publications</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Statewide AI Workgroup</h4>
+          <ul>
+            <li><a href="https://www.ai4mi.org/" target="_blank" rel="noopener">ai4mi.org</a></li>
+            <li><a href="https://claude.ai/artifact/QZUUP2KXQ8TsxVWGiTunzs" target="_blank" rel="noopener">AI4MI Resource Commons</a></li>
+            <li><a href="https://michiganvirtual.org/ai/summit/" target="_blank" rel="noopener">AI Summit</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>For school leaders</h4>
+          <ul>
+            <li><a href="https://michiganvirtual.org/administrators" target="_blank" rel="noopener">School administrators</a></li>
+            <li><a href="https://michiganvirtual.org/consulting" target="_blank" rel="noopener">Consulting services</a></li>
+            <li><a href="https://michiganvirtual.org/professionals/dppd" target="_blank" rel="noopener">District-provided PD</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Michigan Virtual</h4>
+          <ul>
+            <li><a href="https://michiganvirtual.org/about" target="_blank" rel="noopener">About us</a></li>
+            <li><a href="https://michiganvirtual.org/policies" target="_blank" rel="noopener">Policies</a></li>
+            <li><a href="https://michiganvirtual.org/about/support" target="_blank" rel="noopener">Contact us</a></li>
+          </ul>
+        </div>
+      </div>
+      <p>Published by the AI Lab at the Michigan Virtual Learning Research Institute. This tool extends, and does not
+        replace, the <em>AI Integration Framework for School Districts</em> (Michigan Virtual, July 2023); stages align
+        to the National Implementation Research Network active implementation stages. Draft for review, September 2026.
+        Review trigger: any new state statute, federal action, major model capability shift, or 12 months &mdash;
+        whichever comes first. Your responses stay in this browser; nothing is transmitted to or stored by Michigan
+        Virtual or the Statewide AI Workgroup.</p>
+    </div>
+  </div>
+  <div class="fbottom">
+    <div class="wrap wide">
+      <span>&copy; 1998&ndash;2026 Michigan Virtual University &reg;</span>
+      <span>920 Municipal Way, Lansing, MI 48917-6872</span>
+      <span>888.532.5806</span>
+      <span class="fl">
+        <a href="https://michiganvirtual.org/policies/privacy-policy/" target="_blank" rel="noopener">Privacy policy</a>
+        <a href="https://michiganvirtual.org/policies/accessibility/" target="_blank" rel="noopener">Accessibility policy</a>
+        <a href="https://michiganvirtual.org/about/commitment/" target="_blank" rel="noopener">Commitment to people</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================ CONSTANTS ============================ */
+const AI4MI_HOME = "https://www.ai4mi.org/";
+const AI4MI_RES  = "https://claude.ai/artifact/QZUUP2KXQ8TsxVWGiTunzs";
+const ORDER = ["surf","exp","inst","init","full","innov"];
+
+const BENCH = {
+ LPEL:{n:"Leadership, Policy, Ethical & Legal", chairs:["Dave Richards (Michigan Virtual)","Amy Dirlam"]},
+ IFA:{n:"Instructional Frameworks & Assessments", chairs:["[Co-chair to be confirmed]","[Co-chair to be confirmed]"]},
+ PDSU:{n:"Professional Development & Student Use", chairs:["Annie Kim Sytsma (Michigan Virtual)","Aaron Romoslawski"]},
+ BTO:{n:"Business & Technology Operations", chairs:["[Co-chair to be confirmed]","[Co-chair to be confirmed]"]},
+ CCO:{n:"Communications & Community Outreach", chairs:["Walt Sutterlin (Michigan Virtual)","Ashlie O'Connor"]}
+};
+const BENCH_ORDER = ["LPEL","IFA","PDSU","BTO","CCO"];
+
+const ST = {
+ surf:{n:"Surfacing", lb:"Column 0 — new in this version", hz:false,
+  one:"AI is already here; nothing intentional has started.",
+  o:"AI arrived through staff initiative, vendor updates, and consumer tools rather than through a decision. Nothing is wrong with the people; there is simply no owner and no plan yet. The work of this column is to see what is actually happening and put a name on the decision that has to be made.",
+  gate:["Someone with authority has said out loud that AI is already in use here","One named person or team owns the next decision","A first rough picture of current use exists, even an informal one"],
+  g:"There is no formal gate. You leave Surfacing when someone with authority names the reality and takes the decision."},
+ exp:{n:"Exploration", lb:"NIRN stage 1", hz:false,
+  one:"Decide whether, and what, before deciding how.",
+  o:"A cross-role team — teachers, students, families, support staff, a board liaison — studies what AI can and cannot do for priorities the district already holds, reviews state and federal guidance, and reaches an explicit decision including the option of not this, not yet. This is design and discovery work: the answer is not known in advance.",
+  gate:["A written go, no-go, or not-yet decision exists for each candidate use","An implementation team is named and has real authority","Leadership has committed time and budget, not just encouragement"],
+  g:"Gate to Installation: a documented decision, a named team with authority, and committed time and budget. No decision memo, no next stage."},
+ inst:{n:"Installation", lb:"NIRN stage 2 — new in this version", hz:false,
+  one:"Build everything the first day of use will depend on.",
+  o:"The stage between deciding and doing, and the one the 2023 framework skipped entirely. Policy adopted, agreements signed, tools configured and age-gated, staff and coaches trained, communication drafted, incident procedures rehearsed — all before the first student touches an approved tool.",
+  gate:["Policy adopted by the board, handbooks updated before launch","Agreements signed and configuration complete for every approved tool","Pilot staff and their coaches trained, not just scheduled","Supports and communication on the calendar with named owners"],
+  g:"Gate to Initial implementation: policy adopted, agreements signed, pilot staff trained, supports scheduled. If any one is missing you are still installing, whatever the calendar says."},
+ init:{n:"Initial implementation", lb:"NIRN stage 3", hz:false,
+  one:"First real use. Expect the dip; support through it.",
+  o:"Pilot classrooms and offices use AI under real conditions with intensive coaching and rapid-cycle improvement. Performance often dips before it improves — implementation science calls this the awkward stage. The district's job is to gather practice data, fix what breaks quickly, and resist both premature scaling and premature abandonment.",
+  gate:["Coaching runs alongside first use, not months behind it","Usage, fidelity, and outcome data are being collected and shared","First incidents were handled by the written procedure, then it was revised","Explicit go, adjust, or stop decisions have been made at least once"],
+  g:"Gate to Full implementation: evidence the practice works in your context, refined procedures, and a scaling plan with named supports — not just enthusiasm from the pilot group."},
+ full:{n:"Full implementation", lb:"NIRN stage 4", hz:false,
+  one:"Ordinary, monitored, sustained — and scheduled for renewal.",
+  o:"Half or more of intended users work with AI skillfully and with fidelity, and the practice is embedded in hiring, induction, budgeting, and evaluation. This is not an end state. An annual renewal review — new statutes, new capabilities, new evidence, new community needs — feeds straight back into Exploration.",
+  gate:["Outcomes are monitored and broken out by student group","The practice survives turnover: induction, budget lines, teacher-leader paths","An annual renewal review is scheduled and has owners","Where AI is deliberately not used, that is documented and taught"],
+  g:"Renewal loop: any new state statute, federal action, major capability shift, or 12 months elapsed sends the affected domains back to Exploration."},
+ innov:{n:"Innovation", lb:"Horizon — carried from 2023", hz:true,
+  one:"Aspirational. Nobody has figured this out yet.",
+  o:"Carried forward from the 2023 framework's Innovating column and deliberately left outside the stages. It is not stage five and not a reward for finishing — it is the genuinely undiscovered work, which sends you back to design and discovery rather than forward into implementation. Several domains have no innovation state at all, and that is the honest answer rather than a gap.",
+  gate:[],
+  g:"No gate and no evidence requirement. Innovation is not something you pass."}
+};
+
+/* domain display order for the cubes — deliberately not hierarchical */
+const SHUF = {
+ "01":["inst","surf","full","exp","innov","init"],
+ "02":["exp","full","surf","init","inst"],
+ "03":["init","surf","full","exp","inst"],
+ "04":["full","exp","innov","surf","init","inst"],
+ "05":["exp","init","surf","innov","inst","full"],
+ "06":["innov","inst","surf","full","exp","init"],
+ "07":["init","full","exp","innov","surf","inst"],
+ "08":["inst","exp","full","surf","init"],
+ "09":["surf","inst","init","full","exp"],
+ "10":["exp","innov","init","inst","full","surf"],
+ "11":["inst","full","surf","init","exp"]
+};
+
+const D = [
+{n:"01", t:"Leadership, vision and governance", drv:"Leadership driver", bench:"LPEL", was:"2023: Leadership & Vision",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"AI is showing up in our buildings through individual staff initiative and through features our vendors switched on. We have not taken a formal position, nobody has been assigned to, and if you asked five administrators who decides, you would get five answers.",
+   d:"AI is in the building through staff initiative and vendor updates, and no district position exists because no one has been asked to hold one.",
+   lf:["No board conversation on record","Staff cannot name who decides"]},
+ exp:{s:"A group is actively looking at this. We are studying what AI could do for priorities we already hold, reading the state guidance, and talking with staff and families — but the board has not adopted anything and no budget has been committed.",
+   d:"Leadership is beginning to understand potential uses but has not endorsed widespread use or developed a plan. A cross-role task force studies fit against the strategic plan.",
+   lf:["Task force charter with student and family seats","A written go, no-go, or not-yet memo","Needs assessment tied to the strategic plan, not the technology"]},
+ inst:{s:"Our board has adopted a direction and we have named an implementation team with actual authority. Someone has release time for this, there is a line in the budget, and a baseline risk assessment is on file.",
+   d:"Leadership creates a plan and names an implementation team aligned to strategic priorities, carrying a baseline risk assessment.",
+   lf:["Board minutes recording the adoption","A named lead with release time, not an added duty","A funded multi-year budget line"]},
+ init:{s:"Leadership meets on a regular implementation cadence, works an active list of barriers, and protects pilot staff from competing initiatives. Our administrators disclose their own AI use rather than only endorsing it for others.",
+   d:"Leaders hold an implementation cadence, remove barriers, disclose their own AI use, and shield pilot staff from competing initiatives.",
+   lf:["Barrier log with resolution dates","Leaders visibly disclosing their own use","Pilot staff protected from new initiatives"]},
+ full:{s:"AI sits inside our strategic plan rather than beside it. It has already survived at least one leadership change, and there is a renewal review on the board calendar that can reopen any part of this.",
+   d:"Leaders at all levels understand the vision and use AI to improve operations and outcomes while leveraging the distinct human talents of staff.",
+   lf:["Renewal review on the board calendar","Governance intact through a leadership change"]},
+ innov:{s:"We no longer have a separate AI plan because AI is simply part of how we make decisions. We are also in a position to influence state guidance and vendor terms rather than only respond to them.",
+   d:"AI governance stops being a separate structure. There is no AI plan because AI decisions are how the district decides, and the district influences state guidance and vendor terms.",
+   lf:[]}
+ }},
+{n:"02", t:"Policy, legal and responsible use", drv:"Leadership driver", bench:"LPEL", was:"2023: Policy, Ethical & Legal Considerations",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"Our acceptable use, academic integrity, and staff conduct language was written before generative AI existed and does not mention it. Individual administrators are making judgment calls case by case, and those calls do not always match each other.",
+   d:"Acceptable-use, integrity, retention, and conduct policy is silent on generative AI, so decisions are made individually and inconsistently.",
+   lf:["No AI language in the handbook","Two staff members describe different rules"]},
+ exp:{s:"We are working through what our policies need to say, with legal counsel involved on privacy and special education questions, and we are tracking what the state and other districts have published. Nothing has been adopted yet.",
+   d:"The district examines policy, ethical, and legal considerations including risk and appropriate access for all student populations, with counsel on FERPA, COPPA, and IDEA.",
+   lf:["Policy gap analysis against current practice","Crosswalk to state guidance"]},
+ inst:{s:"The board has adopted responsible use language covering disclosure, an approved-tool process, and age-appropriate access. Handbooks are updated, and we have walked through what happens when someone misuses a tool or a deepfake circulates.",
+   d:"Adopted policy and ethical guidelines address privacy, data protection, and responsible practice: disclosure norms, approved-tool process, age-appropriate access, misuse and deepfake response.",
+   lf:["Board-adopted policy with an effective date","A live tool-approval workflow","Handbooks updated before launch"]},
+ init:{s:"Actual cases are being handled through the written procedure rather than improvised, the questions it did not anticipate are getting published answers, and our first round of revisions is already in progress.",
+   d:"Early cases follow the documented procedure, ambiguities get public answers, and the first amendment cycle lands in months rather than years.",
+   lf:["Incident log with dispositions","First policy revision adopted"]},
+ full:{s:"Policy gets reviewed every year against new law and new capabilities. If you stopped a teacher or a junior in the hallway, they could tell you the expectations in their own words.",
+   d:"Board-approved policy and a strong legal framework demonstrate accountability and continuous improvement; annual review tracks new statutes.",
+   lf:["Annual compliance audit","Staff and students state the norms in their own words"]},
+ innov:null
+ }},
+{n:"03", t:"Data privacy, security and vendor management", drv:"Organization driver — new domain", bench:"BTO", was:"2023: folded inside Policy",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"We could not produce a list of where student data goes when AI touches it. Features turned on inside platforms we already license, and staff are using free consumer tools with school work in them.",
+   d:"AI entered district systems through vendor updates nobody opted into and through staff use of consumer tools. The opening move is finding out where data is actually going.",
+   lf:["No inventory of embedded AI features","Staff using personal accounts for school work"]},
+ exp:{s:"We are building the inventory — what AI is embedded in the systems we already own, what staff are using on their own, and what other districts have learned from their own breaches and vendor problems.",
+   d:"The district inventories every place AI touches district data and studies recent K-12 breach and vendor incidents before approving anything.",
+   lf:["AI data-flow inventory","Shadow-use survey results"]},
+ inst:{s:"Every approved tool has a signed data privacy agreement on file. Security settings and age gates are configured, AI language is in our procurement process, and we have rehearsed a breach response with these vendors in scope.",
+   d:"Data privacy agreements are executed for every approved tool, AI clauses are added to procurement, controls and age gates are configured, and breach response is rehearsed.",
+   lf:["Signed agreements on file for every tool","A completed tabletop exercise","Age gates configured and tested"]},
+ init:{s:"Staff can see the approved-tool list, new requests get answered on a posted timeline rather than disappearing, and when something goes wrong we write up what happened instead of managing the optics.",
+   d:"The approved-tool list is published, new requests are triaged on a posted timeline, unapproved tools are flagged, and early incidents produce postmortems rather than cover.",
+   lf:["Public approved-tool list","Requests closed within the posted timeline"]},
+ full:{s:"Vendors get re-vetted every year, we minimize what data we hand over, the board hears about our privacy posture, and we have actually ended a contract when the terms changed.",
+   d:"Vendors are re-vetted annually, data is minimized, privacy posture is reported to the board, and contracts are renegotiated or sunset as models and terms change.",
+   lf:["Annual re-vetting record","At least one documented tool sunset"]},
+ innov:null
+ }},
+{n:"04", t:"Instruction and learning design", drv:"Competency driver", bench:"IFA", was:"2023: Instructional Framework",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"Teachers are using AI on their own initiative, mostly to save time on planning, materials, and email. It is real energy, but nothing about our instructional expectations or lesson design has changed because of it.",
+   d:"Educators are independently exploring AI tools to enhance their own productivity, with little effort directed at changing instructional practice. That energy is an asset with no shared direction yet.",
+   lf:["Individual teachers with private workflows","No instructional conversation on record"]},
+ exp:{s:"We are testing where AI genuinely serves instructional priorities we already have, rather than reshaping instruction around a tool. That includes reading the research honestly and saying so where the evidence is thin.",
+   d:"The district tests where AI serves priorities it already holds rather than bending instruction to fit the tool, and reviews the evidence base including where it is thin.",
+   lf:["Use-case shortlist tied to the instructional framework","An honest read of weak evidence"]},
+ inst:{s:"A pilot cohort has been selected and trained, we have exemplar lessons and classroom norms that say when and how students may use AI and what they must disclose, and coaches are assigned — all before students start.",
+   d:"The pilot cohort is selected and trained, exemplar lessons and classroom AI norms exist covering when, how, and with what disclosure, and coaches are assigned before students touch a tool.",
+   lf:["Pilot roster with written rationale","An exemplar lesson bank","Classroom AI norms students can read"]},
+ init:{s:"Pilot classrooms are using AI in front of students with coaching happening alongside, not months later. We are collecting walkthrough data and changing things week to week, and we treat the rough patch as expected.",
+   d:"Educators begin using AI to scale personalized learning activities and deliver tailored resources, with coaching live and walkthrough data driving iteration.",
+   lf:["Coaching logs from the current cycle","Fidelity walkthrough data","A change made because of that data"]},
+ full:{s:"What worked in the pilot has scaled beyond it, and we have written guidance on where we deliberately do not use AI and why — restraint is taught, not just tolerated.",
+   d:"Effective practice scales district-wide, and where AI adds no demonstrable value it is deliberately absent, documented, and taught as restraint.",
+   lf:["Written guidance on where AI is not used","Practice visible outside the pilot cohort"]},
+ innov:{s:"We are working toward personalized, competency-based learning with AI in a form that nobody has built at scale yet, and we know we are partly inventing it as we go.",
+   d:"The instructional framework lets educators and students use AI to accelerate personalized learning, foster learner ownership, and leverage intelligent tutoring, inside a competency-based model no one has yet built at scale.",
+   lf:[]}
+ }},
+{n:"05", t:"Assessment and academic integrity", drv:"Competency driver", bench:"IFA", was:"2023: Learning Assessments",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"Teachers are seeing work they cannot account for and handling it on their own, differently from one another. Some are relying on detector scores as proof. There is no shared practice and no district position.",
+   d:"Suspected AI use is handled case by case behind classroom doors. The opening move is naming this as an assessment-design question rather than a discipline problem.",
+   lf:["No shared practice between two classrooms","Detector screenshots used as proof"]},
+ exp:{s:"We are treating this as a question about how we assess rather than a discipline problem, and we have looked hard enough at detection tools to know they are not reliable or fair enough to carry a consequence.",
+   d:"Educators explore how AI can strengthen formative measures while confronting that detectors are too unreliable and biased against multilingual writers to carry disciplinary weight.",
+   lf:["Integrity baseline data","A written brief on detector limitations"]},
+ inst:{s:"Our integrity language has been rewritten around disclosure and evidence of process. Assignments are labeled for what AI use is allowed, and teachers had the redesign training before the first redesigned task went out.",
+   d:"The integrity code is rebuilt around disclosure and process evidence, AI expectations are labeled per assignment from none to required, and redesign training lands before the first redesigned task ships.",
+   lf:["Revised integrity code","Assignment-level AI-use labels","Redesign training delivered, not planned"]},
+ init:{s:"Redesigned tasks are actually running — process portfolios, oral defense, in-class drafting — cases go through due process, and teachers sit down together to calibrate their judgments.",
+   d:"Educators use AI to build assessments aligned to personalized goals measuring higher-order thinking. Portfolios, oral defense, and in-class drafting run; cases follow due process.",
+   lf:["Case data with a due-process record","Teachers calibrating judgments together"]},
+ full:{s:"Our system rewards process, originality, and skilled AI-assisted work. Students talk about integrity as theirs rather than as a rule imposed on them, and we check the new formats for validity and equity.",
+   d:"The system values process, originality, and AI-augmented competence; students co-own integrity culture; validity and equity of the new formats are checked rather than assumed.",
+   lf:["Equity breakdown of outcomes","Students describing the norms as theirs"]},
+ innov:{s:"Evidence of learning is becoming continuous rather than an event, with students and AI both participating in assessing it — creativity and real-world application included.",
+   d:"Educators and students use AI to holistically assess learning including creativity, inventive problem-solving, and real-world application. Evidence becomes continuous rather than an event.",
+   lf:[]}
+ }},
+{n:"06", t:"AI literacy: students, staff and families", drv:"Competency driver — new domain", bench:"PDSU", was:"2023: no curricular row existed",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"Students are learning about AI from each other and from whatever they can reach. Staff and families are forming strong opinions with no shared vocabulary, and nobody could point to where this is taught.",
+   d:"Students learn AI from peers and from whatever they can reach, while staff and families form opinions with no common language.",
+   lf:["No course or unit anyone can point to","Staff using the term AI to mean different things"]},
+ exp:{s:"We have mapped where AI concepts already appear in our curriculum, chosen a competency framework to work from, and found out what students, staff, and families actually know and believe right now.",
+   d:"The district maps where AI concepts already live in the curriculum, selects a competency framework, and baselines what students, staff, and families know.",
+   lf:["Curriculum map","Baseline survey across all three groups"]},
+ inst:{s:"There is an adopted K-12 scope and sequence covering ethics, verification, bias, and deepfakes, with teacher toolkits distributed and family materials ready in the languages our families speak.",
+   d:"A K-12 scope and sequence covering concepts, ethics, prompting, verification, bias, and media literacy is adopted, with teacher toolkits and family sessions ready before units launch.",
+   lf:["Adopted scope and sequence","Teacher toolkit distributed","Family materials in the languages of the district"]},
+ init:{s:"First units are being taught across grade bands, we are reading student work and cataloguing the misconceptions back into the materials, and family sessions are running in every attendance area.",
+   d:"First units are taught across grade bands, student work is reviewed, misconceptions are catalogued back into the materials, and family sessions run in every attendance area.",
+   lf:["Taught-unit tracker","Family session feedback","Materials revised after seeing student work"]},
+ full:{s:"Every graduate leaves having met literacy competencies including bias and provenance. Staff literacy is part of onboarding, and community sessions run on a standing calendar rather than by request.",
+   d:"Every graduate meets literacy competencies including bias, provenance, and societal impact; staff literacy sits inside induction; community offerings run on a standing calendar.",
+   lf:["Competency attainment data by graduating class","AI literacy in the new-hire induction sequence"]},
+ innov:{s:"Students are learning with agents, not only about them, and we are working out what authorship and ownership of learning even mean when an agent is part of the process.",
+   d:"Students learn with agents rather than only about them. What it means to be the author of your own learning when an agent is part of the process is an open question no framework answers yet.",
+   lf:[]}
+ }},
+{n:"07", t:"Professional learning and coaching", drv:"Competency driver", bench:"PDSU", was:"2023: Professional Learning",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"The educators who are getting better at this are doing it themselves — on their own time, often on their own dime, using sources we did not provide. There is nothing district-sponsored on the calendar.",
+   d:"Educators seek training independently, often on their own time and at their own expense. The opening move is treating that as demand data.",
+   lf:["No district AI offering on the PD calendar","Staff naming outside sources as their training"]},
+ exp:{s:"We are finding out what staff actually need and how much they trust this, and taking honest stock of how much coaching capacity we have rather than assuming our instructional coaches can absorb it.",
+   d:"The district assesses readiness, trust, and needs, and inventories internal coaching capacity honestly.",
+   lf:["Needs and trust survey results","Coach capacity inventory with real numbers"]},
+ inst:{s:"We have built different sequences for teachers, paraprofessionals, counselors, office staff, and administrators. Coaches were trained first, the time is protected on the master calendar, and practice rubrics exist.",
+   d:"Role-specific sequences exist for every group; coaches are trained first; time is calendared and protected; practice rubrics exist before anyone is observed.",
+   lf:["Differentiated plan by role","A trained coach cadre","Protected time on the master calendar"]},
+ init:{s:"Coaching is happening alongside first use rather than trailing it by a semester, and what we hear from practice is changing the professional learning within weeks rather than next year.",
+   d:"Educators have access to varied learning aligned to the district vision and the expertise to teach AI ethics. Job-embedded coaching runs alongside first use rather than trailing it.",
+   lf:["Coaching cycle completion data","A revision traced to practice feedback"]},
+ full:{s:"There is a path from novice through teacher leader that runs itself, and we judge professional learning by whether practice changed, not by how many people sat in the room.",
+   d:"A novice-to-teacher-leader path sustains itself and professional learning is measured by practice change rather than seat time.",
+   lf:["Practice-change evidence","Staff-led sessions on the calendar"]},
+ innov:{s:"Professional learning is generated for the individual teacher based on what actually happened in their classroom that week, rather than selected from a catalog.",
+   d:"AI systems generate personalized professional development that responds to what a teacher actually did in the classroom that week.",
+   lf:[]}
+ }},
+{n:"08", t:"Student use, voice and wellbeing", drv:"Competency driver", bench:"PDSU", was:"2023: Student Use",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"Our students are almost certainly the heaviest AI users in the building, including companion chatbots, and they are the group we have asked the least. It is invisible to adults rather than absent.",
+   d:"Student use is invisible to adults rather than absent, companion chatbots included. The opening move is asking them, with no consequence attached to the answer.",
+   lf:["No student input on record","Adults guessing at what students use"]},
+ exp:{s:"We are asking students directly what they use and why, with nothing attached to the answer, and staff are auditing age settings and thinking seriously about wellbeing risk for the first time.",
+   d:"Listening panels surface actual use; staff audit age gates and wellbeing risk. Students have been introduced to basic concepts in a handful of classes.",
+   lf:["Student listening session data","A wellbeing risk brief that names companion chatbots"]},
+ inst:{s:"Access is configured differently by grade band, a student advisory group has a real seat rather than a survey, and counselors have protocols ready for AI-related harm including nonconsensual images.",
+   d:"Age-appropriate access is configured by grade band, a student advisory holds real standing, and counselor protocols are ready for AI-related harm.",
+   lf:["Written access matrix by grade band","Counselor protocol for AI-related harm","Student advisory with a seat, not a survey"]},
+ init:{s:"Students are using approved tools with scaffolds and clear disclosure expectations, reporting channels are live and actually used, and we can point to decisions we changed because of what students told us.",
+   d:"Students engage with AI across a variety of classes with growing competence, though evidence of proficiency is still limited. Report channels are live and trusted.",
+   lf:["A decision changed by student feedback","Report channel usage data"]},
+ full:{s:"Students help design this work and teach their peers, with documented proficiency to show for it, and our wellbeing measures are holding steady or improving rather than quietly sliding.",
+   d:"Most students use AI to support their learning goals, critically assess bias, privacy, and fairness, and judge the authenticity and origin of content, with proficiency well documented.",
+   lf:["Proficiency portfolios","Wellbeing trend data, not anecdote"]},
+ innov:null
+ }},
+{n:"09", t:"Family and community partnership", drv:"Organization driver", bench:"CCO", was:"2023: Outreach",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"Most families learned what we are doing with AI from the news or from their own children. Our communication on this has been limited, and questions tend to reach us as complaints.",
+   d:"Communication with staff, parents, and community stakeholders about AI is limited. The opening move is listening before announcing.",
+   lf:["No family communication on record","Questions arriving through complaints"]},
+ exp:{s:"We are listening before announcing: focus groups with families in the languages they speak, and a real scan of who else in the community — employers, libraries, colleges — could be a partner in this.",
+   d:"Announcement is replaced with two-way listening: multilingual focus groups surface hopes and concerns, and an asset scan maps community partners.",
+   lf:["Findings published in the languages families speak","Named community assets, not a wish list"]},
+ inst:{s:"A family advisory group is seated with standing, consent and opt-out paths exist and work, partner agreements are drafted, and the communication plan includes ways for people to talk back.",
+   d:"A family advisory holds real standing, consent and opt-out workflows exist where required, partner agreements are drafted, and the communication plan carries feedback channels.",
+   lf:["Advisory roster with meeting dates","A working opt-out request path"]},
+ init:{s:"We publish plain-language pages naming every tool that touches student data and learning, questions get answered publicly rather than individually, and community partners are hosting students.",
+   d:"The district interacts regularly with families and stakeholders to gauge readiness and address concerns. Plain-language transparency pages name every tool touching student data.",
+   lf:["Per-tool transparency pages in plain language","A public question-and-answer record"]},
+ full:{s:"Families and partners hold seats when we decide whether to renew or end something, community programs run on their own momentum, and we measure trust rather than assume we have it.",
+   d:"A communication plan engages all stakeholders through two-way interaction, gauging comfort while exploring new opportunities. Families hold renewal seats.",
+   lf:["Co-governance seats in renewal decisions","Trust survey trend data"]},
+ innov:null
+ }},
+{n:"10", t:"Operations and infrastructure", drv:"Organization driver", bench:"BTO", was:"2023: Business & Technology Operations",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"AI features are switching on inside platforms we already pay for, and staff are using them, but nobody is tracking which ones or what they cost us. Vendor release notes go unread.",
+   d:"AI features arrive inside existing platforms and staff use them with no one tracking it. The opening move is an honest inventory of what is already on.",
+   lf:["No inventory of embedded AI features","Vendor release notes unread"]},
+ exp:{s:"We have audited our infrastructure, identity, filtering, and devices, inventoried the AI already embedded in what we own, and modeled what this actually costs over several years rather than one.",
+   d:"The district explores AI to automate routine administrative tasks and reviews the technology ecosystem needed to support integration, modeling multi-year total cost.",
+   lf:["Readiness audit","Multi-year total cost of ownership model"]},
+ inst:{s:"Provisioning, single sign-on, and rostering are configured. Administrative workflows are mapped with explicit points where a human reviews before anything goes out, and the helpdesk was trained before tickets arrived.",
+   d:"Provisioning, single sign-on, and rostering are configured; workflows are mapped with explicit human review points; the helpdesk is trained before the first ticket.",
+   lf:["Workflow maps showing human review points","Helpdesk runbook for AI tickets"]},
+ init:{s:"Operational pilots are running with a person reviewing every consequential output, and we are collecting both the time saved and the errors made rather than only the success stories.",
+   d:"The district integrates AI to enhance operations and create efficiencies, and every consequential output carries human oversight.",
+   lf:["Oversight logs","Efficiency and error metrics side by side"]},
+ full:{s:"AI-assisted operations are standard only where they save time without costing accuracy or fairness. We keep a register of decisions that require a human, and it is enforced.",
+   d:"The district uses AI to optimize most business functions with the ecosystem and staff to support it. Automation is standard only where it saves time without harming accuracy or equity.",
+   lf:["A register of decisions requiring a human","Accuracy holding steady as volume scales"]},
+ innov:{s:"Systems act within bounded authority rather than waiting for a person at every step, and we are openly working out what oversight of that should even look like in a school district.",
+   d:"Systems act within bounded authority rather than waiting for a human at every step. Nobody has settled what oversight of consequential automated action looks like in a school district.",
+   lf:[]}
+ }},
+{n:"11", t:"Evaluation and continuous improvement", drv:"Organization driver — new domain", bench:"BTO", was:"2023: no evaluation function existed",
+ q:"Which of the following sounds most like it is describing your current state?",
+ c:{
+ surf:{s:"Nobody has said what AI is supposed to improve here, so nobody can say whether it is working. When we describe success, we tend to describe how many people are using something.",
+   d:"No one has stated what AI should improve, so no claim about it can be tested. The opening move is naming what success would look like before anything else is bought.",
+   lf:["No stated purpose for any AI purchase","Success described as adoption counts"]},
+ exp:{s:"We have written down what should get better — learning, workload, equity, safety — before buying anything else, and we captured baseline data so a claim about improvement could actually be tested later.",
+   d:"Success is defined before adoption: a theory of action naming what should improve, with baselines captured so later claims can be tested.",
+   lf:["Written theory of action","Baseline data captured before rollout"]},
+ inst:{s:"Usage, fidelity, and outcome data are instrumented and tested, improvement cycles are on real calendars with owners, and every metric has a plan for breaking results out by student group.",
+   d:"Usage, fidelity, and outcome data are instrumented; improvement cycles are on real calendars; every metric has a plan for breaking results out by student group.",
+   lf:["Dashboards tested with real data","A breakdown plan per metric"]},
+ init:{s:"Improvement cycles are running on real data, we share what failed as well as what worked, and when a cycle says stop, we stop rather than pressing on.",
+   d:"Rapid cycles run on real data, findings including failures are shared openly, and go, adjust, or stop decisions are honored rather than overridden.",
+   lf:["Improvement cycle records","At least one documented stop decision"]},
+ full:{s:"We publish an annual report on outcomes, cost, and equity that feeds directly into the next round of decisions — and we version this framework itself when it turns out to be wrong.",
+   d:"The district evaluates AI's impact including efforts to narrow equity gaps, through an annual public report that feeds re-exploration and versions this framework itself.",
+   lf:["Published annual report","A changelog showing what changed and why"]},
+ innov:null
+ }}
+];
+
+/* AI4MI Resource Commons — real scored records, mapped to domain and level */
+const RES = {
+"01":[["exp","Artificial Intelligence Guidance Resource / MDE Comprehensive Guidance","Michigan Department of Education","LPEL","https://www.michigan.gov/mde/services/academic-standards/artificial-intelligence"],
+      ["exp","SAFE Framework and AI policy tools","EDSAFE AI Alliance","LPEL","https://www.edsafeai.org/safe"],
+      ["exp","K-12 AI Policy and Implementation Collection","AI4MI / Michigan Virtual","LPEL","https://www.ai4mi.org/"],
+      ["inst","AI Guidance for Schools Toolkit","TeachAI (CodeAI, ETS, ISTE, Khan Academy)","LPEL","https://www.teachai.org/toolkit"],
+      ["inst","Sample AI Guidance Language for Schools","TeachAI","LPEL","https://www.teachai.org/toolkit-policy"]],
+"02":[["exp","Student Privacy Compass","Future of Privacy Forum","LPEL","https://studentprivacycompass.org/"],
+      ["exp","Illinois AI Guidance for K-12 Education","Illinois State Board of Education","LPEL","https://www.isbe.net/ai"],
+      ["exp","State guidance on generative AI in K-12 education (tracker)","Future of Privacy Forum","LPEL","https://studentprivacycompass.org/ai-guidance/"],
+      ["inst","AI Guidance for Schools Toolkit","TeachAI (CodeAI, ETS, ISTE, Khan Academy)","LPEL","https://www.teachai.org/toolkit"],
+      ["inst","Sample AI Guidance Language for Schools","TeachAI","LPEL","https://www.teachai.org/toolkit-policy"]],
+"03":[["surf","Hand in Hand: schools' embrace of AI connected to increased risks to students","Center for Democracy & Technology","BTO","https://cdt.org/insights/report-hand-in-hand-schools-embrace-of-ai-connected-to-increased-risks-to-students/"],
+      ["exp","Student Privacy Compass — AI and edtech privacy analysis","Future of Privacy Forum","BTO","https://studentprivacycompass.org/"],
+      ["inst","Student Data Privacy Toolkit","CoSN","BTO","https://www.cosn.org/tools-and-resources/resource/student-data-privacy-toolkit-1/"],
+      ["inst","EdTech Quality Indicators Guide","EdTech Quality Collaborative","BTO","https://edtechindex.org/"],
+      ["init","Privacy ratings and AI product reviews","Common Sense Media","BTO","https://www.commonsense.org/education/privacy"]],
+"04":[["exp","Empowering Learners for the Age of AI: an AI literacy framework","OECD and European Commission","IFA","https://ailiteracyframework.org/"],
+      ["exp","AI Competency Framework for Students","UNESCO","IFA","https://www.unesco.org/en/articles/ai-competency-framework-students"],
+      ["inst","CAST UDL Guidelines 3.0","CAST","IFA","https://udlguidelines.cast.org/"],
+      ["inst","AI Learning Priorities for All K-12 Students","CSTA with AI4K12","IFA","https://csteachers.org/ai/"],
+      ["init","Artificial intelligence — professional learning and AI literacy","California Department of Education","IFA","https://www.cde.ca.gov/ci/pl/aiincalifornia.asp"]],
+"05":[["surf","Teens in the AI Era: schoolwork and skills that matter","Common Sense Media","IFA","https://www.commonsensemedia.org/research"],
+      ["exp","Policy brief: rethinking AI detection tools","University of Idaho AI Research Collaborative","IFA","https://www.uidaho.edu/research/entities/ai"],
+      ["exp","Testing of detection tools for AI-generated text","Weber-Wulff et al., International Journal for Educational Integrity","IFA","https://edintegrity.biomedcentral.com/articles/10.1007/s40979-023-00146-z"],
+      ["inst","AI Assessment Scale (AIAS) v2.1","Perkins, Roe, Furze and MacVaugh","IFA","https://aiassessmentscale.com/"],
+      ["inst","Teaching with AI: a practical guide to a new era of human learning","Bowen and Watson","IFA","https://www.press.jhu.edu/books/title/12980/teaching-ai"]],
+"06":[["surf","CodeAI curriculum and Hour of AI","CodeAI","PDSU","https://code.org/ai"],
+      ["inst","aiEDU curriculum and educator resources","The AI Education Project","PDSU","https://www.aiedu.org/"],
+      ["inst","AI literacy lessons and digital citizenship curriculum","Common Sense Education","PDSU","https://www.commonsense.org/education/digital-citizenship"],
+      ["init","AILit framework classroom exemplars and learning scenarios","OECD and European Commission","PDSU","https://ailiteracyframework.org/"],
+      ["init","Experience AI","Raspberry Pi Foundation with Google DeepMind","PDSU","https://experience-ai.org/"]],
+"07":[["surf","Teaching for Tomorrow: closing the expectations gap","Walton Family Foundation and Gallup","PDSU","https://www.waltonfamilyfoundation.org/learning/teaching-for-tomorrow-educators-embrace-ai"],
+      ["exp","MACUL Summer Spark and AI professional learning","MACUL","PDSU","https://www.macul.org/"],
+      ["inst","REMC AI and Media Literacy Collaborative","REMC Association of Michigan","PDSU","https://www.remc.org/"],
+      ["inst","AI Professional Learning Pathways","AI4MI / Michigan Virtual","PDSU","https://www.ai4mi.org/"],
+      ["full","MindShift","KQED","PDSU","https://www.kqed.org/mindshift"]],
+"08":[["surf","The Common Sense Media census: AI use by tweens and teens","Common Sense Media","PDSU","https://www.commonsensemedia.org/research"],
+      ["exp","AI companion and chatbot risk assessments","Common Sense Media youth AI risk assessments","PDSU","https://www.commonsensemedia.org/ai-ratings"],
+      ["exp","Teens are turning to AI chatbots for emotional support","UMass Chan Medical School","PDSU","https://www.umassmed.edu/news/"],
+      ["inst","Deepfake and nonconsensual intimate imagery findings in schools","Center for Democracy & Technology","CCO","https://cdt.org/insights/"],
+      ["inst","Advisories on AI companions and sharing school imagery","eSafety Commissioner (Australia)","CCO","https://www.esafety.gov.au/"]],
+"09":[["inst","AI in the classroom: what to tell families","National School Public Relations Association","CCO","https://www.nspra.org/"],
+      ["inst","Crisis communication planning for AI incidents","NSPRA with district practitioners","CCO","https://www.nspra.org/"],
+      ["init","Parent and caregiver guides to AI chatbots and companions","Common Sense Media","CCO","https://www.commonsensemedia.org/ai-ratings"],
+      ["init","Student Data Privacy Toolkit part 3: transparency and trust","CoSN","CCO","https://www.cosn.org/tools-and-resources/resource/student-data-privacy-toolkit-1/"],
+      ["full","AI and crisis communication resources","NSPRA","CCO","https://www.nspra.org/"]],
+"10":[["exp","U.S. State of EdTech 2026","CoSN","BTO","https://www.cosn.org/state-of-edtech/"],
+      ["exp","K-12 Gen AI Maturity Tool and readiness checklist","CoSN with Council of the Great City Schools","BTO","https://www.cosn.org/ai/"],
+      ["init","Generative AI and assistive technology for students with disabilities","CAST with CoSN","BTO","https://www.cast.org/"],
+      ["full","AI and environmental sustainability (sector guidance)","Jisc National Centre for AI","BTO","https://www.jisc.ac.uk/artificial-intelligence"],
+      ["full","The carbon cost of our clicks: the environmental impact of AI","National Science Teaching Association","IFA","https://www.nsta.org/"]],
+"11":[["exp","Digital Education Outlook 2026","OECD","IFA","https://www.oecd.org/education/"],
+      ["inst","Merit Network — Michigan research and education network","Merit Network","BTO","https://www.merit.edu/"],
+      ["init","Research notes: two emerging strategies for using AI in tutoring","FutureEd, Georgetown University","IFA","https://www.future-ed.org/"],
+      ["init","AI tutoring outperforms in-class active learning: a randomized trial","Kestin et al., Nature Scientific Reports","IFA","https://www.nature.com/srep/"],
+      ["full","The Hechinger Report — AI and education reporting","The Hechinger Report","CCO","https://hechingerreport.org/"]]
+};
+
+/* ============================ STATE ============================ */
+const KEY = "ai4mi-aif-v4";
+const FRESH = () => ({v:4, lv:{}, gates:{}, nq:{}, nc:{}, chat:{}, qi:0, sorted:false});
+let S = FRESH();
+try{ const raw = localStorage.getItem(KEY); if(raw) S = Object.assign(FRESH(), JSON.parse(raw)||{}); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); return true; }catch(e){ return false; } }
+const $ = id => document.getElementById(id);
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const stagesFor = d => ORDER.filter(k => d.c[k]);
+const answered = () => D.filter(d => S.lv[d.n]).length;
+const dom = n => D.find(d => d.n===n);
+function flash(el, msg){ if(!el) return; el.textContent = msg; clearTimeout(el._t); el._t = setTimeout(() => el.textContent = "", 2200); }
+function debounce(fn, ms){ let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+
+/* ============================ NAV ============================ */
+const STEPS = [["intro","Start"],["learn","Basics"],["assess","Self-assessment"],["profile","Your profile"],["matrix","Full matrix"]];
+let cur = "intro";
+function go(step){
+  cur = step;
+  STEPS.forEach(([id]) => $("s-"+id).classList.toggle("on", id===step));
+  renderRail();
+  if(step==="assess") renderQ();
+  if(step==="profile") renderProfile();
+  if(step==="matrix") renderMatrix();
+  window.scrollTo({top:0, behavior:"instant"});
+}
+function renderRail(){
+  $("rail").innerHTML = STEPS.map(([id,label],i) =>
+    `${i?'<span aria-hidden="true">/</span>':''}<button class="${id===cur?'on':''}" data-rail="${id}"${id===cur?' aria-current="step"':''}>${esc(label)}</button>`).join("");
+  $("rail").querySelectorAll("[data-rail]").forEach(b => b.addEventListener("click", () => go(b.dataset.rail)));
+}
+document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+$("theme").addEventListener("click", () => {
+  const r = document.documentElement;
+  const dark = r.getAttribute("data-theme")==="dark" ||
+    (!r.hasAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  r.setAttribute("data-theme", dark ? "light" : "dark");
+});
+
+/* ============================ BASICS STRIP ============================ */
+$("strip").innerHTML = ORDER.map(k => {
+  const s = ST[k];
+  return `<div class="${s.hz?'hz':''}"><div class="lb">${esc(s.lb)}</div>
+    <div class="nm">${esc(s.n)}</div><div class="tx">${esc(s.one)}</div></div>`;
+}).join("");
+
+/* ============================ ASSESSMENT ============================ */
+function renderQ(){
+  if(S.qi >= D.length){ go("profile"); return; }
+  if(S.qi < 0) S.qi = 0;
+  const d = D[S.qi], keys = SHUF[d.n].slice();
+  $("qkick").textContent = `Domain ${S.qi+1} of ${D.length} — ${d.drv.replace(" — new domain","")}`;
+  $("qdomain").textContent = d.t;
+  $("qprompt").textContent = d.q;
+  $("pbar").style.width = (S.qi/D.length*100)+"%";
+  $("ptx").textContent = `${answered()} of ${D.length} domains marked so far. Pick one box; there is no right answer and the boxes are not in any order.`;
+
+  let cubes = keys.map(k => {
+    const sel = S.lv[d.n]===k;
+    return `<button class="cube" role="button" aria-pressed="${sel}" data-k="${k}"><span class="mark" aria-hidden="true"></span>${esc(d.c[k].s)}</button>`;
+  });
+  if(cubes.length < 6){
+    const sel = S.lv[d.n]==="none";
+    cubes.push(`<button class="cube none" aria-pressed="${sel}" data-k="none"><span class="mark" aria-hidden="true"></span>None of these describes us. We will come back to this domain.</button>`);
+  }
+  $("cubes").innerHTML = cubes.join("");
+  $("cubes").querySelectorAll(".cube").forEach(b => b.addEventListener("click", () => {
+    const k = b.dataset.k;
+    if(k==="none"){ delete S.lv[d.n]; } else { S.lv[d.n] = k; }
+    save();
+    $("cubes").querySelectorAll(".cube").forEach(x => x.setAttribute("aria-pressed", String(x===b)));
+    setTimeout(() => { S.qi++; save(); renderQ(); }, 240);
+  }));
+
+  $("qnote").value = S.nq[d.n] || "";
+  $("qsaved").textContent = "";
+  $("back").style.visibility = S.qi ? "visible" : "hidden";
+  $("jump").style.display = answered() ? "inline-block" : "none";
+  $("next").textContent = S.qi === D.length-1 ? "Finish and see my profile" : "Next domain";
+}
+const saveNote = debounce(() => {
+  const d = D[S.qi]; if(!d) return;
+  S.nq[d.n] = $("qnote").value; save(); flash($("qsaved"), "Notes saved in this browser");
+}, 500);
+$("qnote").addEventListener("input", saveNote);
+$("back").addEventListener("click", () => { S.qi = Math.max(0, S.qi-1); save(); renderQ(); });
+$("next").addEventListener("click", () => { S.qi++; save(); renderQ(); });
+$("unsure").addEventListener("click", () => { const d = D[S.qi]; if(d) delete S.lv[d.n]; S.qi++; save(); renderQ(); });
+
+/* ============================ PROFILE ============================ */
+function chipFor(k){
+  const bg = {surf:"var(--light-teal)", exp:"var(--mid-teal)", inst:"var(--teal)",
+              init:"var(--dark-teal)", full:"var(--black-teal)", innov:"var(--sand)"}[k];
+  const fg = (k==="surf"||k==="innov") ? "var(--black-teal)" : "#fff";
+  return `<span class="chip" style="background:${bg};color:${fg}">${esc(ST[k].n)}</span>`;
+}
+function barFor(k){
+  const i = ORDER.indexOf(k), full = k==="innov";
+  return `<span class="bar" role="img" aria-label="${esc(ST[k].n)}">` +
+    ORDER.slice(0,5).map((_,j) => `<i class="${full||j<=i?'f':''}"></i>`).join("") +
+    (full?'<i class="h"></i>':'') + `</span>`;
+}
+function nextOf(d,k){ const ks = stagesFor(d), i = ks.indexOf(k); return (i>=0 && i<ks.length-1) ? ks[i+1] : null; }
+function noteCount(n){
+  let c = (S.nq[n] && S.nq[n].trim()) ? 1 : 0;
+  Object.keys(S.nc).forEach(key => { if(key.split(":")[0]===n && S.nc[key].trim()) c++; });
+  Object.keys(S.chat).forEach(key => { if(key.split(":")[0]===n && (S.chat[key]||[]).length) c += S.chat[key].length; });
+  return c;
+}
+function renderProfile(){
+  const n = answered();
+  $("psum").textContent = n===0
+    ? "Nothing marked yet. Run the self-assessment and this table fills itself in."
+    : `${n} of ${D.length} domains marked. Select any row to open that domain at the level you marked — the column overview, what it looks like here, the look-fors, your notes, and linked resources.`;
+
+  let rows = D.slice();
+  if(S.sorted) rows.sort((a,b) => ORDER.indexOf(S.lv[a.n]||"surf") - ORDER.indexOf(S.lv[b.n]||"surf"));
+  $("ptable").innerHTML = rows.map(d => {
+    const k = S.lv[d.n], nc = noteCount(d.n);
+    return `<tr class="row" tabindex="0" data-n="${d.n}">
+      <td><span class="dname">${esc(d.n)} — ${esc(d.t)}</span><br><span class="dsub">${esc(d.drv)} · ${esc(d.bench)} bench</span></td>
+      <td>${k ? chipFor(k) : '<span class="blank">not marked</span>'}</td>
+      <td>${k ? barFor(k) : '<span class="bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>'}</td>
+      <td>${nc ? `<span class="dsub">${nc} saved</span>` : '<span class="blank">none</span>'}</td>
+      <td><span class="opener">Open</span></td></tr>`;
+  }).join("");
+  $("ptable").querySelectorAll("tr.row").forEach(tr => {
+    tr.addEventListener("click", () => openPanel(tr.dataset.n));
+    tr.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openPanel(tr.dataset.n); } });
+  });
+
+  const marked = D.filter(d => S.lv[d.n]);
+  const low = marked.slice().sort((a,b) => ORDER.indexOf(S.lv[a.n]) - ORDER.indexOf(S.lv[b.n])).slice(0,3);
+  $("pri").innerHTML = low.length ? low.map(d => {
+    const k = S.lv[d.n], nx = nextOf(d,k);
+    return `<div class="card"><span class="tagn">${esc(ST[k].n)}${nx?` to ${esc(ST[nx].n)}`:""}</span>
+      <h3>${esc(d.t)}</h3><p>${esc(nx ? d.c[nx].d : d.c[k].d)}</p>
+      <div style="margin-top:14px"><button class="btn sm" data-open="${d.n}">Open this domain</button></div></div>`;
+  }).join("") : `<p class="blank">Mark at least one domain to see priorities.</p>`;
+  $("pri").querySelectorAll("[data-open]").forEach(b => b.addEventListener("click", () => openPanel(b.dataset.open)));
+
+  const spread = new Set(marked.map(d => S.lv[d.n])).size;
+  $("jagnote").innerHTML = marked.length < 3
+    ? "<strong>Mark more domains for a useful profile.</strong> The shape of the profile is the point; a single domain tells you very little."
+    : (spread <= 1
+      ? "<strong>Every domain came out in the same column.</strong> That happens, but it is rare and worth a second pass with someone who would disagree with you. Uniform profiles usually mean the group answered about intent rather than evidence."
+      : `<strong>Your profile spans ${spread} different columns.</strong> That is the normal, honest shape. Work the furthest-behind domains first rather than pushing the strongest ones further — the weakest column caps the whole implementation.`);
+
+  $("contacts").innerHTML = BENCH_ORDER.map(b => {
+    const m = BENCH[b], ds = D.filter(d => d.bench===b);
+    return `<div class="c"><div class="bn">${esc(b)} bench</div><div class="cn">${esc(m.n)}</div>
+      <div class="ch">Co-chairs: ${m.chairs.map(c => /^\[/.test(c) ? `<span class="tbd">${esc(c)}</span>` : esc(c)).join(" and ")}</div>
+      <div class="ch" style="margin-top:6px">Contact: <span class="tbd">[email to be confirmed]</span></div>
+      <div class="dm">Domains: ${ds.map(d => esc(d.n)).join(", ")}</div></div>`;
+  }).join("") + `<div class="c"><div class="bn">Workgroup steering</div><div class="cn">The Statewide AI Workgroup</div>
+      <div class="ch">Co-chairs: Karle Delo (Michigan Virtual) and Dave Tebo</div>
+      <div class="ch" style="margin-top:6px">Contact: <span class="tbd">[email to be confirmed]</span></div>
+      <div class="dm">General questions about this framework or the workgroup. <a href="${AI4MI_HOME}" target="_blank" rel="noopener">ai4mi.org</a></div></div>`;
+}
+$("sortbtn").addEventListener("click", () => {
+  S.sorted = !S.sorted; save();
+  $("sortbtn").textContent = S.sorted ? "Sort: framework order" : "Sort: furthest behind first";
+  renderProfile();
+});
+$("redo").addEventListener("click", () => { S.qi = 0; save(); go("assess"); });
+$("reset").addEventListener("click", () => {
+  if(!confirm("Clear every selection, note, and saved answer on this device? Download a backup first if you want to keep it.")) return;
+  S = FRESH(); save(); go("intro");
+});
+$("copy").addEventListener("click", async () => {
+  try{ await navigator.clipboard.writeText(summaryText()); flash($("copy"), "Copied"); $("copy").textContent="Copied"; setTimeout(()=>$("copy").textContent="Copy summary",1800); }
+  catch(e){ alert(summaryText()); }
+});
+function summaryText(){
+  const L = ["AI Integration Framework for School Districts — district profile", "Michigan Virtual AI Lab", ""];
+  D.forEach(d => {
+    L.push(`${d.n} ${d.t}: ${S.lv[d.n] ? ST[S.lv[d.n]].n : "not marked"}`);
+    if(S.nq[d.n] && S.nq[d.n].trim()) L.push(`    notes: ${S.nq[d.n].trim()}`);
+  });
+  L.push("", "Stages align to the NIRN active implementation stages. michiganvirtual.org/ai");
+  return L.join("\n");
+}
+
+/* ============================ FULL MATRIX ============================ */
+function renderMatrix(){
+  let h = `<table class="mx"><caption class="sr">Full framework matrix: eleven domains by six columns</caption><thead><tr>
+    <th scope="col">Domain</th>` + ORDER.map(k =>
+    `<th scope="col" class="${ST[k].hz?'hz':''}"><span class="ml">${esc(ST[k].lb)}</span><span class="mn">${esc(ST[k].n)}</span></th>`).join("") + `</tr></thead><tbody>`;
+  D.forEach(d => {
+    h += `<tr><th scope="row"><span class="rn">${esc(d.n)} · ${esc(d.bench)} bench</span><span class="rt">${esc(d.t)}</span></th>`;
+    ORDER.forEach(k => {
+      const c = d.c[k];
+      if(!c){ h += `<td class="empty ${ST[k].hz?'hzc':''}">no state claimed</td>`; return; }
+      const you = S.lv[d.n]===k;
+      h += `<td class="${ST[k].hz?'hzc':''} ${you?'you':''}" tabindex="0" data-n="${d.n}" data-k="${k}">${esc(c.d)}` +
+        (c.lf.length ? `<span class="lfn">Look for: ${esc(c.lf[0])}</span>` : "") + `</td>`;
+    });
+    h += `</tr>`;
+  });
+  h += `</tbody></table>`;
+  $("mxwrap").innerHTML = h;
+  $("mxwrap").querySelectorAll("td[data-n]").forEach(td => {
+    td.addEventListener("click", () => openPanel(td.dataset.n, td.dataset.k));
+    td.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openPanel(td.dataset.n, td.dataset.k); } });
+  });
+}
+
+/* ============================ PANEL ============================ */
+let pd = null, pk = null;
+function openPanel(num, k){
+  pd = dom(num);
+  pk = (k && pd.c[k]) ? k : (S.lv[num] && pd.c[S.lv[num]] ? S.lv[num] : stagesFor(pd)[0]);
+  $("pdrv").textContent = `${pd.drv} · ${pd.was} · ${pd.bench} bench`;
+  $("pt").textContent = `${pd.n} — ${pd.t}`;
+  renderPanel();
+  $("scrim").classList.add("on"); $("panel").classList.add("on");
+  document.body.style.overflow = "hidden";
+  $("close").focus();
+}
+function closePanel(){
+  $("scrim").classList.remove("on"); $("panel").classList.remove("on");
+  document.body.style.overflow = "";
+  if(cur==="profile") renderProfile();
+  if(cur==="matrix") renderMatrix();
+}
+$("close").addEventListener("click", closePanel);
+$("scrim").addEventListener("click", closePanel);
+document.addEventListener("keydown", e => { if(e.key==="Escape" && $("panel").classList.contains("on")) closePanel(); });
+
+function renderPanel(){
+  const d = pd, k = pk, s = ST[k], cell = d.c[k], you = S.lv[d.n]===k, nx = nextOf(d,k);
+  const id = d.n+":"+k, ks = stagesFor(d);
+  const all = RES[d.n] || [], here = all.filter(r => r[0]===k), other = all.filter(r => r[0]!==k).slice(0,3);
+  const hist = S.chat[id] || [];
+
+  let h = `<div class="tabs" role="tablist">` + ks.map(x =>
+    `<button class="tab ${x===k?'on':''} ${ST[x].hz?'hz':''} ${S.lv[d.n]===x?'you':''}" data-t="${x}">${esc(ST[x].n)}</button>`).join("") + `</div>`;
+
+  h += `<div class="block"><h4>${you?"You marked this column":"Column overview"}</h4>
+    <div class="stagebox"><div class="sl">${esc(s.lb)}</div><div class="sn">${esc(s.n)}</div><p>${esc(s.o)}</p></div></div>`;
+
+  h += `<div class="block"><h4>What this looks like in ${esc(d.t.toLowerCase())}</h4><p class="spec">${esc(cell.d)}</p></div>`;
+
+  if(cell.lf.length) h += `<div class="block"><h4>Look for</h4><ul class="lf">${cell.lf.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+
+  if(s.gate.length){
+    const ch = S.gates[id] || [];
+    h += `<div class="block"><h4>Checkpoint — are you ready to move on?</h4><div class="gate">` +
+      s.gate.map((g,i) => `<label><input type="checkbox" data-g="${i}" ${ch[i]?"checked":""}><span>${esc(g)}</span></label>`).join("") +
+      `<div class="verdict no" id="verdict"></div><div id="advwrap" style="margin-top:12px"></div></div>
+      <p class="dsub" style="margin-top:9px">${esc(s.g)}</p></div>`;
+  } else {
+    h += `<div class="block"><h4>Checkpoint</h4><div class="gate"><p style="margin:0;font-size:.9rem;color:var(--text-2)">${esc(s.g)}</p></div></div>`;
+  }
+
+  if(nx) h += `<div class="block"><h4>Next: ${esc(ST[nx].n)}</h4><p style="margin:0;font-size:.92rem;color:var(--text-2)">${esc(d.c[nx].d)}</p></div>`;
+
+  h += `<div class="block notes"><label for="cnote">Your notes for ${esc(d.t.toLowerCase())} at ${esc(s.n)}
+    <span class="hint">— evidence, names, dates, what is blocking this.</span></label>
+    <textarea id="cnote" placeholder="What have you already done here? What did you see that made you pick this column?">${esc(S.nc[id]||"")}</textarea>
+    <div class="saved" id="csaved"></div></div>`;
+
+  h += `<div class="block"><h4>Resources${here.length?` for this column`:` for this domain`}</h4><div class="res">` +
+    (here.length?here:other).map(r => `<a class="r" href="${esc(r[4])}" target="_blank" rel="noopener">
+      <div class="rt">${esc(r[1])}</div><div class="rm"><span class="rb">${esc(r[3])} bench</span>${esc(r[2])}${here.length?"":" · "+esc(ST[r[0]].n)}</div></a>`).join("") +
+    `</div><p class="dsub" style="margin-top:11px">Scored and tiered in the
+      <a href="${AI4MI_RES}" target="_blank" rel="noopener">AI4MI Resource Commons</a> — 242 resources across five benches.
+      ${here.length?"":"None of this domain's entries are specific to this column, so the closest are shown."}</p></div>`;
+
+  h += `<div class="block" id="askblock" style="display:none"><h4>Ask about your next step</h4>` +
+    (hist.length ? `<div class="hist">` + hist.map((x,i) =>
+      `<div class="h"><div class="hq">${esc(x.q)}</div><div class="ha">${esc(x.a)}</div>
+       <div class="ht">${esc(x.t)} · <button class="txtbtn" data-del="${i}" style="font-size:.72rem">Remove</button></div></div>`).join("") + `</div>` : "") +
+    `<textarea id="askq" placeholder="e.g. What should our first 30 days look like in this domain?"></textarea>
+     <div style="margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+       <button class="btn sm" id="asksend">Ask</button>
+       <span class="dsub">Uses your marked profile as context. Questions and answers are saved with your notes.</span>
+     </div><div class="answer" id="askans"></div></div>`;
+
+  $("pbody").innerHTML = h;
+
+  $("pbody").querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
+    pk = b.dataset.t; renderPanel(); $("panel").scrollTo({top:0, behavior:"instant"});
+  }));
+  $("pbody").querySelectorAll("[data-g]").forEach(cb => cb.addEventListener("change", () => {
+    const arr = (S.gates[id]||[]).slice(); arr[+cb.dataset.g] = cb.checked; S.gates[id] = arr; save(); verdict();
+  }));
+  const cn = $("cnote");
+  if(cn){
+    const sv = debounce(() => { S.nc[id] = cn.value; save(); flash($("csaved"), "Notes saved in this browser"); }, 500);
+    cn.addEventListener("input", sv);
+  }
+  $("pbody").querySelectorAll("[data-del]").forEach(b => b.addEventListener("click", () => {
+    const arr = (S.chat[id]||[]).slice(); arr.splice(+b.dataset.del,1); S.chat[id] = arr; save(); renderPanel();
+  }));
+  verdict(); wireAsk();
+
+  function verdict(){
+    const v = $("verdict"); if(!v) return;
+    const ch = S.gates[id]||[], done = s.gate.filter((_,i) => ch[i]).length, total = s.gate.length;
+    v.className = "verdict " + (done===total ? "yes" : "no");
+    v.textContent = done===total
+      ? (nx ? `All ${total} met. You are ready for ${ST[nx].n}.` : `All ${total} met. Run the renewal review on schedule.`)
+      : `${done} of ${total} met. Stay in this column and finish the rest — moving on now is how the next one fails.`;
+    const w = $("advwrap");
+    if(w){
+      w.innerHTML = (done===total && nx) ? `<button class="btn sm" id="adv">Mark us at ${esc(ST[nx].n)}</button>` : "";
+      const a = $("adv");
+      if(a) a.addEventListener("click", () => { S.lv[d.n] = nx; pk = nx; save(); renderPanel(); });
+    }
+  }
+}
+
+/* ============================ ASK ============================ */
+let SAMPLE = null, askReady = false;
+(async () => {
+  for(let i=0;i<40 && !(window.claude && window.claude.use);i++) await new Promise(r => setTimeout(r,300));
+  if(!(window.claude && window.claude.use)) return;
+  try{ SAMPLE = await window.claude.use("sample"); }catch(e){ SAMPLE = null; }
+  askReady = !!SAMPLE;
+  if(askReady && $("panel").classList.contains("on")) wireAsk();
+})();
+function wireAsk(){
+  const b = $("askblock"); if(!b) return;
+  b.style.display = askReady ? "block" : "none";
+  const send = $("asksend"); if(!send || !askReady) return;
+  send.addEventListener("click", async () => {
+    const q = ($("askq").value||"").trim(); if(!q || !SAMPLE) return;
+    const out = $("askans"); out.classList.add("on"); out.textContent = "Thinking…"; send.disabled = true;
+    const id = pd.n+":"+pk;
+    const prof = D.filter(x => S.lv[x.n]).map(x => `${x.t}: ${ST[S.lv[x.n]].n}`).join("; ") || "no domains marked yet";
+    const notes = (S.nq[pd.n]||"") + " " + (S.nc[id]||"");
+    const prompt =
+`You are a district implementation coach working inside the AI Integration Framework for School Districts, published by the AI Lab at Michigan Virtual.
+The framework has six columns: Surfacing, Exploration, Installation, Initial implementation, Full implementation, and an Innovation horizon outside the stages. The middle four are the NIRN active implementation stages.
+
+The district's marked profile: ${prof}.
+They are asking about the domain "${pd.t}" in the column "${ST[pk].n}".
+What that column means here: ${pd.c[pk].d}
+The gate out of this column: ${ST[pk].g}
+${notes.trim() ? `Their own notes for this domain: ${notes.trim()}` : ""}
+
+Their question: ${q}
+
+Answer in under 150 words, plain language, for a superintendent or curriculum director. Be concrete and sequenced. Do not tell them to move to a later column until the gate above is met. Do not invent Michigan policy, statute, or sources. No preamble.`;
+    try{
+      const r = await SAMPLE(prompt, {modelTier:"default", onText:({text}) => { out.textContent = text; }});
+      out.textContent = r.text;
+      const arr = (S.chat[id]||[]).slice();
+      arr.push({q, a:r.text, t:new Date().toLocaleString()});
+      S.chat[id] = arr; save();
+      $("askq").value = ""; renderPanel();
+    }catch(err){
+      out.textContent = (err && err.code==="not_granted")
+        ? "This needs your permission to ask Claude. Reload and allow it, or use the resources above."
+        : "Could not get an answer just now. The resources above cover the same ground.";
+    }
+    send.disabled = false;
+  });
+}
+
+/* ============================ BACKUP: DOWNLOAD / RESTORE ============================ */
+function csvCell(v){ v = String(v==null?"":v); return /[",\n\r]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+function toCSV(){
+  const rows = [["record_type","domain_number","domain_name","column_key","column_name","field_a","field_b"]];
+  D.forEach(d => {
+    rows.push(["level", d.n, d.t, S.lv[d.n]||"", S.lv[d.n]?ST[S.lv[d.n]].n:"", "", ""]);
+    if(S.nq[d.n]) rows.push(["assessment_note", d.n, d.t, "", "", S.nq[d.n], ""]);
+    ORDER.forEach(k => {
+      const id = d.n+":"+k;
+      if(S.nc[id]) rows.push(["column_note", d.n, d.t, k, ST[k].n, S.nc[id], ""]);
+      (S.gates[id]||[]).forEach((v,i) => { if(v) rows.push(["checkpoint", d.n, d.t, k, ST[k].n, String(i), "true"]); });
+      (S.chat[id]||[]).forEach(x => rows.push(["question", d.n, d.t, k, ST[k].n, x.q, x.a]));
+    });
+  });
+  return rows.map(r => r.map(csvCell).join(",")).join("\r\n");
+}
+function parseCSV(text){
+  const rows = []; let row = [], f = "", q = false;
+  text = text.replace(/^\uFEFF/,"");
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(q){
+      if(c === '"'){ if(text[i+1] === '"'){ f += '"'; i++; } else q = false; }
+      else f += c;
+    } else if(c === '"'){ q = true; }
+    else if(c === ','){ row.push(f); f = ""; }
+    else if(c === '\n'){ row.push(f); rows.push(row); row = []; f = ""; }
+    else if(c === '\r'){ /* skip */ }
+    else f += c;
+  }
+  if(f.length || row.length){ row.push(f); rows.push(row); }
+  return rows.filter(r => r.length > 1 && r.some(x => x !== ""));
+}
+function fromCSV(text){
+  const rows = parseCSV(text);
+  if(!rows.length) throw new Error("empty");
+  const head = rows[0].map(x => x.trim().toLowerCase());
+  if(head[0] !== "record_type") throw new Error("not a framework CSV");
+  const N = FRESH(); let used = 0;
+  rows.slice(1).forEach(r => {
+    const [type, n, , key, , a, b] = r;
+    if(!dom(n)) return;
+    if(type==="level" && key && ORDER.includes(key)){ N.lv[n] = key; used++; }
+    else if(type==="assessment_note" && a){ N.nq[n] = a; used++; }
+    else if(type==="column_note" && key && a){ N.nc[n+":"+key] = a; used++; }
+    else if(type==="checkpoint" && key){ const id=n+":"+key; N.gates[id]=N.gates[id]||[]; N.gates[id][+a]= b==="true"; used++; }
+    else if(type==="question" && key && a){ const id=n+":"+key; N.chat[id]=N.chat[id]||[]; N.chat[id].push({q:a,a:b||"",t:"restored"}); used++; }
+  });
+  if(!used) throw new Error("nothing recognizable");
+  return N;
+}
+async function offer(filename, data){
+  let dl = null;
+  try{ if(window.claude && window.claude.use) dl = await window.claude.use("downloads"); }catch(e){ dl = null; }
+  if(dl){
+    try{ await dl.save({filename, data}); flash($("iosaved"), "Saved: "+filename); return; }
+    catch(err){
+      if(err && err.code==="declined"){ flash($("iosaved"), "Download cancelled"); return; }
+      flash($("iosaved"), "Download unavailable here — trying the browser instead");
+    }
+  }
+  try{
+    const blob = new Blob([data], {type: filename.endsWith(".csv") ? "text/csv" : "application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = filename; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+    flash($("iosaved"), "Saved: "+filename);
+  }catch(e){ flash($("iosaved"), "Could not download here. Use Copy summary instead."); }
+}
+const stamp = () => new Date().toISOString().slice(0,10);
+$("dljson").addEventListener("click", () => offer(`mv-ai-framework-backup-${stamp()}.json`,
+  JSON.stringify({app:"mv-ai-integration-framework", version:4, exported:new Date().toISOString(), state:S}, null, 2)));
+$("dlcsv").addEventListener("click", () => offer(`mv-ai-framework-profile-${stamp()}.csv`, toCSV()));
+$("upl").addEventListener("change", e => {
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    let N = null;
+    try{
+      const txt = String(rd.result||"");
+      if(/\.json$/i.test(f.name) || txt.trim().startsWith("{")){
+        const j = JSON.parse(txt);
+        const st = j && j.state ? j.state : j;
+        if(!st || typeof st !== "object" || !st.lv) throw new Error("not a framework backup");
+        N = Object.assign(FRESH(), st);
+      } else {
+        N = fromCSV(txt);
+      }
+    }catch(err){
+      flash($("iosaved"), "That file could not be read as a framework backup.");
+      e.target.value = ""; return;
+    }
+    if(answered() && !confirm("Replace the selections and notes currently in this browser with the contents of this file?")){
+      e.target.value = ""; return;
+    }
+    N.qi = 0; S = N; save(); e.target.value = "";
+    renderProfile(); flash($("iosaved"), "Restored from "+f.name);
+  };
+  rd.onerror = () => flash($("iosaved"), "Could not read that file.");
+  rd.readAsText(f);
+});
+
+/* ============================ BOOT ============================ */
+renderRail();
+$("sortbtn").textContent = S.sorted ? "Sort: framework order" : "Sort: furthest behind first";
+go(answered() ? "profile" : "intro");
+</script>
+</body>
+</html>
